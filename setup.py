@@ -41,16 +41,27 @@ show(p)
 
 ```
 
-#### output:
+### export bulk graphs for all possible conditions 
+
+```python
+from package.DashBoardsTemplates import export_graphs_hist
+from bokeh.plotting import show 
+# use any graph for data clustrig or analysis purposes above function using bokeh for bulk visualisation
+visual=export_graphs_hist(ploat_data)
+# iter visual variable or visualise one by one
+show(visual[0])
+
+```
+
 
 
 """
 setup(
     name="DashBoardUtils-DataScience",
-    version="1.13",
+    version="1.14",
     author="Rajat Mishra",
     author_email="rajatsmishra@aol.com",
-    description="AutoMated visualization Features Extraction For Data Scientists",
+    description="AutoMated visualization Features Extraction For Data Scientists and data format calculater for application developers",
     long_description=long_description,
     long_description_content_type="text/markdown",
     packages=find_packages(),
@@ -60,5 +71,5 @@ setup(
         "Operating System :: OS Independent",
     ],
     python_requires=">=3.6",
-    install_requires=["pandas"],
+    install_requires=["pandas","bokeh"],
 )

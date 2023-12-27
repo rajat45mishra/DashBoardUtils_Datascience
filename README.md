@@ -36,4 +36,13 @@ show(p)
 
 ```
 
-#### output:
+### export bulk graphs for all possible conditions 
+
+```python
+from package.DashBoardsTemplates import export_graphs_hist
+from bokeh.plotting import show 
+# use any graph for data clustrig or analysis purposes above function using bokeh for bulk visualisation
+visual=export_graphs_hist(ploat_data)
+# iter visual variable or visualise one by one
+show(visual[0])
+```
