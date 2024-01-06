@@ -52,13 +52,35 @@ visual=export_graphs_hist(ploat_data)
 show(visual[0])
 
 ```
+### calucate data formets for visualisation data for formets visulisation purposes
 
+```python
+from package.keyborddata import *
+from package.formatcalculator import get_unique_hashes_from_data 
+# get hashes chuncks
+unique_hashes=get_unique_hashes_from_data(ploat_data)
+# get combines hashes 
+unique_=[]
+for x in unique_hashes:
+    unique_+=x
+```
+### calucate data formets for dataframe data for formets data optimisation and validation purposes
 
-
+```python
+from package.keyborddata import *
+import pandas as pd
+from package.formatcalculator import split_all_labels_to_words_with_new_cols,hash_df_single_df_column,hash_df_formats,get_unique_hashes_from_df_columnwise
+# get df vocabs
+vocabdf=split_all_labels_to_words_with_new_cols(pd.DataFrame("test.csv"))
+# get vocabdf formats
+formets=hash_df_formats(vocabdf)
+# get vocabdf formets column wise 
+unique_formatas=get_unique_hashes_from_df_columnwise(formets)
+```
 """
 setup(
     name="DashBoardUtils-DataScience",
-    version="1.14",
+    version="1.20",
     author="Rajat Mishra",
     author_email="rajatsmishra@aol.com",
     description="AutoMated visualization Features Extraction For Data Scientists and data format calculater for application developers",
@@ -71,5 +93,5 @@ setup(
         "Operating System :: OS Independent",
     ],
     python_requires=">=3.6",
-    install_requires=["pandas","bokeh"],
+    install_requires=["pandas", "bokeh"],
 )
