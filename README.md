@@ -97,6 +97,10 @@ unique_formatas=FormatCalculator.get_unique_hashes_from_df_columnwise(formets)
 
 ```
 
+### Sponcers Guidelines
+
+##### please send us email to get sponcers docs for this project <rajatsmishra@aol.com>
+
 ### Project Contribution GuideLines
 
 ##### git page link <https://github.com/rajat45mishra/DashBoardUtils_Datascience>
@@ -112,4 +116,3 @@ unique_formatas=FormatCalculator.get_unique_hashes_from_df_columnwise(formets)
 ###### - use cases docs and api docs for users
 
 ###### - totorials for extracting and scripting formats to solve realword software application optimisation purposes
-
