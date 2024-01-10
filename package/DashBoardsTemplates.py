@@ -1,4 +1,4 @@
-# bokeh version
+# bokeh version for diffrent graphs pairs from generated data
 
 from bokeh.plotting import figure
 import random

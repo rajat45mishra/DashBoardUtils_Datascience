@@ -36,7 +36,7 @@ show(p)
 
 ```
 
-### export bulk graphs for all possible conditions 
+### export bulk graphs for all possible conditions
 
 ```python
 from package.DashBoardsTemplates import export_graphs_hist
@@ -51,24 +51,65 @@ show(visual[0])
 
 ```python
 from package.keyborddata import *
-from package.formatcalculator import get_unique_hashes_from_data 
+from package.formatcalculator import FormatCalculator 
 # get hashes chuncks
-unique_hashes=get_unique_hashes_from_data(ploat_data)
+unique_hashes=FormatCalculator.get_unique_hashes_from_data(ploat_data)
 # get combines hashes 
 unique_=[]
 for x in unique_hashes:
     unique_+=x
 ```
+
 ### calucate data formets for dataframe data for formets data optimisation and validation purposes
 
 ```python
 from package.keyborddata import *
 import pandas as pd
-from package.formatcalculator import split_all_labels_to_words_with_new_cols,hash_df_single_df_column,hash_df_formats,get_unique_hashes_from_df_columnwise
+from package.formatcalculator import FormatCalculator
 # get df vocabs
-vocabdf=split_all_labels_to_words_with_new_cols(pd.DataFrame("test.csv"))
+vocabdf=FormatCalculator.split_all_labels_to_words_with_new_cols(pd.read_csv("test.csv"))
 # get vocabdf formats
-formets=hash_df_formats(vocabdf)
+formets=FormatCalculator.hash_df_formats(vocabdf)
 # get vocabdf formets column wise 
-unique_formatas=get_unique_hashes_from_df_columnwise(formets)
+unique_formatas=FormatCalculator.get_unique_hashes_from_df_columnwise(formets)
 ```
+
+### optimising_regex string
+
+```python
+from package.keyborddata import *
+import pandas as pd
+from package.formatcalculator import FormatCalculator
+# get df vocabs
+vocabdf=FormatCalculator.split_all_labels_to_words_with_new_cols(pd.read_csv("test.csv"))
+# get vocabdf formats
+formets=FormatCalculator.hash_df_formats(vocabdf)
+# optimise formetts in df
+df_list_formetted=[]
+for x,y in formets.iterrows():
+    for cd in formets.columns.to_list():
+        y[cd]=regex_formattor(y[cd])
+    df_list_formetted.append(y.to_dict())
+# reasamble df with same variable
+formets=pd.DataFrame.from_records(df_list_formetted)
+# get vocabdf formets column wise 
+unique_formatas=FormatCalculator.get_unique_hashes_from_df_columnwise(formets)
+
+```
+
+### Project Contribution GuideLines
+
+##### git page link <https://github.com/rajat45mishra/DashBoardUtils_Datascience>
+
+##### send us update suggestions on <rajatsmishra@aol.com>
+
+#### todo tasks
+
+###### - add more algorithum in data classifier
+
+###### - add more graph templates in DashBoaredtemplates class
+
+###### - use cases docs and api docs for users
+
+###### - totorials for extracting and scripting formats to solve realword software application optimisation purposes
+
