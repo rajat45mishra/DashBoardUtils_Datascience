@@ -11,3 +11,7 @@
     ~~~~~
     {{v}}
     {% endfor %}
+
+Tutorial
+--------
+.. mdinclude:: ../READEME.md
