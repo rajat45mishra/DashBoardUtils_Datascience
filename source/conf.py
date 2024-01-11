@@ -30,8 +30,11 @@ release = '1.25'
 # Add any Sphinx extension module names here, as strings. They can be
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
-extensions = [
-]
+extensions = ['sphinx_jinja']
+
+jinja_contexts = {
+    'first_ctx': {'topics': {'a': 'b', 'c': 'd'}}
+}
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
@@ -40,7 +43,25 @@ templates_path = ['_templates']
 # directories to ignore when looking for source files.
 # This pattern also affects html_static_path and html_extra_path.
 exclude_patterns = []
+jinja_env_kwargs = {
+    'lstrip_blocks': True,
+}
 
+jinja_filters = {
+    'bold': lambda value: f'**{value}**',
+}
+
+jinja_tests = {
+    'instanceof': lambda value, type: isinstance(value, type),
+}
+
+jinja_globals = {
+    'list': list,
+}
+
+jinja_policies = {
+    'compiler.ascii_str': False,
+}
 
 # -- Options for HTML output -------------------------------------------------
 
