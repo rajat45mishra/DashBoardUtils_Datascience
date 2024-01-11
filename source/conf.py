@@ -30,7 +30,7 @@ release = '1.25'
 # Add any Sphinx extension module names here, as strings. They can be
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
-extensions = ['sphinx_jinja']
+extensions = ['sphinx_jinja',"myst-parser"]
 
 jinja_contexts = {
     'first_ctx': {'topics': {'a': 'b', 'c': 'd'}}
