@@ -30,7 +30,7 @@ release = '1.25'
 # Add any Sphinx extension module names here, as strings. They can be
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
-extensions = ['sphinx_jinja',"myst-parser"]
+extensions = ['sphinx_jinja',"myst_parser"]
 
 jinja_contexts = {
     'first_ctx': {'topics': {'a': 'b', 'c': 'd'}}
@@ -38,6 +38,11 @@ jinja_contexts = {
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
+source_suffix = {
+    '.rst': 'restructuredtext',
+    '.txt': 'markdown',
+    '.md': 'markdown',
+}
 
 # List of patterns, relative to source directory, that match files and
 # directories to ignore when looking for source files.
