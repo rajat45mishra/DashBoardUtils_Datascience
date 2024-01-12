@@ -1,11 +1,12 @@
 # bokeh version for diffrent graphs pairs from generated data
 
-from bokeh.plotting import figure
 import random
 import math
 
 
 def export_graphs_hist(chuncks):
+    from bokeh.plotting import figure
+
     obj_lists = []
     for i, x in enumerate(chuncks):
         fruits = list(x.values())[0]["lables"]
@@ -25,6 +26,8 @@ def export_graphs_hist(chuncks):
 
 
 def export_graphs_line(chuncks):
+    from bokeh.plotting import figure
+
     obj_lists = []
     for i, x in enumerate(chuncks):
         fruits = [x for x in range(len(list(x.values())[0]["lables"]))]
@@ -37,6 +40,8 @@ def export_graphs_line(chuncks):
 
 
 def export_graphs_pie_charts(chuncks):
+    from bokeh.plotting import figure
+
     obj_lists = []
     for i, x in enumerate(chuncks):
         graph = figure(title=list(x.keys())[0])

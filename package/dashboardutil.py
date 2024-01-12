@@ -1,12 +1,13 @@
 from datetime import datetime
 from typing import List
-import pandas as pd
+
 
 
 class DashboardElementsBuilder:
     """DashboardElementsBuilder build data visualisation elements on behalf of DataFrame"""
 
     def __init__(self, data, DataClassifier) -> None:
+        import pandas as pd
         if isinstance(data, pd.DataFrame):
             self.data = data
         else:
