@@ -97,6 +97,8 @@ unique_formatas=FormatCalculator.get_unique_hashes_from_df_columnwise(formets)
 
 ```
 
+###### [Documentation LINK](https://dashboardutils-datascience.readthedocs.io/en/latest/index.html)
+
 ### Sponcers Guidelines
 
 ##### please send us email to get sponcers docs for this project <rajatsmishra@aol.com>
