@@ -10,63 +10,39 @@
 # add these directories to sys.path here. If the directory is relative to the
 # documentation root, use os.path.abspath to make it absolute, like shown here.
 #
-# import os
-# import sys
-# sys.path.insert(0, os.path.abspath('.'))
+import os
+import sys
+sys.path.insert(0, os.path.abspath('../..'))
 
 
 # -- Project information -----------------------------------------------------
 
-project = 'DashboardUtilsDataScience'
+project = 'DashboardutilsDatascience'
 copyright = '2024, Rajat Mishra'
 author = 'Rajat Mishra'
 
 # The full version, including alpha/beta/rc tags
-release = '1.25'
-
+release = '1.0'
+extensions = [
+    'sphinx.ext.autodoc',
+    #'sphinx.ext.viewcode'
+    #'sphinx_mdinclude',
+]
 
 # -- General configuration ---------------------------------------------------
 
 # Add any Sphinx extension module names here, as strings. They can be
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
-extensions = ['sphinx_jinja',"myst_parser"]
-
-jinja_contexts = {
-    'first_ctx': {'topics': {'a': 'b', 'c': 'd'}}
-}
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
-source_suffix = {
-    '.rst': 'restructuredtext',
-    '.txt': 'markdown',
-    '.md': 'markdown',
-}
 
 # List of patterns, relative to source directory, that match files and
 # directories to ignore when looking for source files.
 # This pattern also affects html_static_path and html_extra_path.
 exclude_patterns = []
-jinja_env_kwargs = {
-    'lstrip_blocks': True,
-}
 
-jinja_filters = {
-    'bold': lambda value: f'**{value}**',
-}
-
-jinja_tests = {
-    'instanceof': lambda value, type: isinstance(value, type),
-}
-
-jinja_globals = {
-    'list': list,
-}
-
-jinja_policies = {
-    'compiler.ascii_str': False,
-}
 
 # -- Options for HTML output -------------------------------------------------
 
@@ -74,7 +50,7 @@ jinja_policies = {
 # a list of builtin themes.
 #
 html_theme = 'alabaster'
-
+html_show_sourcelink = False
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,
 # so a file named "default.css" will overwrite the builtin "default.css".

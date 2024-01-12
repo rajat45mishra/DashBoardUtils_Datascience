@@ -1,0 +1,260 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+    <title>USE CASES DOCS &#8212; DashboardutilsDatascience 1.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css" />
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/sphinx_highlight.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="package" href="modules.html" />
+    <link rel="prev" title="USE CASES" href="usecases.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="use-cases-docs">
+<h1>USE CASES DOCS<a class="headerlink" href="#use-cases-docs" title="Permalink to this heading">¶</a></h1>
+<section id="dashboard-builder-util-generate-all-posibble-stats-from-dataframe-for-datascience-and-visualisation-purposes">
+<h2>dashboard builder util generate all posibble stats from Dataframe for DataScience and visualisation purposes<a class="headerlink" href="#dashboard-builder-util-generate-all-posibble-stats-from-dataframe-for-datascience-and-visualisation-purposes" title="Permalink to this heading">¶</a></h2>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">package.dashboardutil</span> <span class="kn">import</span> <span class="n">DashboardElementsBuilder</span>
+<span class="kn">from</span> <span class="nn">package.dataclassifier</span> <span class="kn">import</span> <span class="n">DataClassifier</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="n">df</span><span class="o">=</span><span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">&quot;cars.csv&quot;</span><span class="p">)</span>
+<span class="n">dat</span><span class="o">=</span><span class="n">DataClassifier</span><span class="p">()</span>
+<span class="n">visual</span><span class="o">=</span><span class="n">DashboardElementsBuilder</span><span class="p">(</span><span class="n">df</span><span class="p">,</span><span class="n">dat</span><span class="p">)</span>
+<span class="n">ploats</span><span class="o">=</span><span class="n">visual</span><span class="o">.</span><span class="n">build_ploats</span><span class="p">(</span><span class="s2">&quot;hist&quot;</span><span class="p">,</span><span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">to_list</span><span class="p">()[</span><span class="mi">1</span><span class="p">:])</span>
+<span class="n">ploat_data</span><span class="o">=</span><span class="p">[]</span>
+<span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">ploats</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">z</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+        <span class="n">ploat_data</span><span class="o">+=</span><span class="nb">list</span><span class="p">(</span><span class="n">z</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="above-data-canbe-visualised-like-below">
+<h2>above data canbe visualised like below<a class="headerlink" href="#above-data-canbe-visualised-like-below" title="Permalink to this heading">¶</a></h2>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">data</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;slow&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;lables&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mf">66.2</span><span class="p">,</span> <span class="mf">66.4</span><span class="p">,</span> <span class="mf">66.3</span><span class="p">,</span> <span class="mf">71.4</span><span class="p">,</span> <span class="mf">67.9</span><span class="p">],</span> <span class="s1">&#39;counts&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">]}}</span>
+<span class="kn">from</span> <span class="nn">bokeh.plotting</span> <span class="kn">import</span> <span class="n">figure</span><span class="p">,</span> <span class="n">show</span>
+
+<span class="n">fruits</span> <span class="o">=</span> <span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;slow&#39;</span><span class="p">][</span><span class="s1">&#39;lables&#39;</span><span class="p">]]</span>
+<span class="n">counts</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;slow&#39;</span><span class="p">][</span><span class="s1">&#39;counts&#39;</span><span class="p">]</span>
+
+<span class="n">p</span> <span class="o">=</span> <span class="n">figure</span><span class="p">(</span><span class="n">x_range</span><span class="o">=</span><span class="n">fruits</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="mi">350</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s2">&quot;Range&quot;</span><span class="p">,</span>
+           <span class="n">toolbar_location</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">tools</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+
+<span class="n">p</span><span class="o">.</span><span class="n">vbar</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">fruits</span><span class="p">,</span> <span class="n">top</span><span class="o">=</span><span class="n">counts</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mf">0.9</span><span class="p">)</span>
+
+<span class="n">p</span><span class="o">.</span><span class="n">xgrid</span><span class="o">.</span><span class="n">grid_line_color</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="n">p</span><span class="o">.</span><span class="n">y_range</span><span class="o">.</span><span class="n">start</span> <span class="o">=</span> <span class="mi">0</span>
+
+<span class="n">show</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="export-bulk-graphs-for-all-possible-conditions">
+<h2>export bulk graphs for all possible conditions<a class="headerlink" href="#export-bulk-graphs-for-all-possible-conditions" title="Permalink to this heading">¶</a></h2>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">package.DashBoardsTemplates</span> <span class="kn">import</span> <span class="n">export_graphs_hist</span>
+<span class="kn">from</span> <span class="nn">bokeh.plotting</span> <span class="kn">import</span> <span class="n">show</span>
+<span class="c1"># use any graph for data clustrig or analysis purposes above function using bokeh for bulk visualisation</span>
+<span class="n">visual</span><span class="o">=</span><span class="n">export_graphs_hist</span><span class="p">(</span><span class="n">ploat_data</span><span class="p">)</span>
+<span class="c1"># iter visual variable or visualise one by one</span>
+<span class="n">show</span><span class="p">(</span><span class="n">visual</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+</pre></div>
+</div>
+</section>
+<section id="calucate-data-formets-for-visualisation-data-for-formets-visulisation-purposes">
+<h2>calucate data formets for visualisation data for formets visulisation purposes<a class="headerlink" href="#calucate-data-formets-for-visualisation-data-for-formets-visulisation-purposes" title="Permalink to this heading">¶</a></h2>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">package.keyborddata</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">package.formatcalculator</span> <span class="kn">import</span> <span class="n">FormatCalculator</span>
+<span class="c1"># get hashes chuncks</span>
+<span class="n">unique_hashes</span><span class="o">=</span><span class="n">FormatCalculator</span><span class="o">.</span><span class="n">get_unique_hashes_from_data</span><span class="p">(</span><span class="n">ploat_data</span><span class="p">)</span>
+<span class="c1"># get combines hashes</span>
+<span class="n">unique_</span><span class="o">=</span><span class="p">[]</span>
+<span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">unique_hashes</span><span class="p">:</span>
+    <span class="n">unique_</span><span class="o">+=</span><span class="n">x</span>
+</pre></div>
+</div>
+</section>
+<section id="calucate-data-formets-for-dataframe-data-for-formets-data-optimisation-and-validation-purposes">
+<h2>calucate data formets for dataframe data for formets data optimisation and validation purposes<a class="headerlink" href="#calucate-data-formets-for-dataframe-data-for-formets-data-optimisation-and-validation-purposes" title="Permalink to this heading">¶</a></h2>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">package.keyborddata</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">from</span> <span class="nn">package.formatcalculator</span> <span class="kn">import</span> <span class="n">FormatCalculator</span>
+<span class="c1"># get df vocabs</span>
+<span class="n">vocabdf</span><span class="o">=</span><span class="n">FormatCalculator</span><span class="o">.</span><span class="n">split_all_labels_to_words_with_new_cols</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">&quot;test.csv&quot;</span><span class="p">))</span>
+<span class="c1"># get vocabdf formats</span>
+<span class="n">formets</span><span class="o">=</span><span class="n">FormatCalculator</span><span class="o">.</span><span class="n">hash_df_formats</span><span class="p">(</span><span class="n">vocabdf</span><span class="p">)</span>
+<span class="c1"># get vocabdf formets column wise</span>
+<span class="n">unique_formatas</span><span class="o">=</span><span class="n">FormatCalculator</span><span class="o">.</span><span class="n">get_unique_hashes_from_df_columnwise</span><span class="p">(</span><span class="n">formets</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="optimising-regex-string">
+<h2>optimising_regex string<a class="headerlink" href="#optimising-regex-string" title="Permalink to this heading">¶</a></h2>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">package.keyborddata</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">from</span> <span class="nn">package.formatcalculator</span> <span class="kn">import</span> <span class="n">FormatCalculator</span>
+<span class="c1"># get df vocabs</span>
+<span class="n">vocabdf</span><span class="o">=</span><span class="n">FormatCalculator</span><span class="o">.</span><span class="n">split_all_labels_to_words_with_new_cols</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">&quot;test.csv&quot;</span><span class="p">))</span>
+<span class="c1"># get vocabdf formats</span>
+<span class="n">formets</span><span class="o">=</span><span class="n">FormatCalculator</span><span class="o">.</span><span class="n">hash_df_formats</span><span class="p">(</span><span class="n">vocabdf</span><span class="p">)</span>
+<span class="c1"># optimise formetts in df</span>
+<span class="n">df_list_formetted</span><span class="o">=</span><span class="p">[]</span>
+<span class="k">for</span> <span class="n">x</span><span class="p">,</span><span class="n">y</span> <span class="ow">in</span> <span class="n">formets</span><span class="o">.</span><span class="n">iterrows</span><span class="p">():</span>
+    <span class="k">for</span> <span class="n">cd</span> <span class="ow">in</span> <span class="n">formets</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">to_list</span><span class="p">():</span>
+        <span class="n">y</span><span class="p">[</span><span class="n">cd</span><span class="p">]</span><span class="o">=</span><span class="n">regex_formattor</span><span class="p">(</span><span class="n">y</span><span class="p">[</span><span class="n">cd</span><span class="p">])</span>
+    <span class="n">df_list_formetted</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">y</span><span class="o">.</span><span class="n">to_dict</span><span class="p">())</span>
+<span class="c1"># reasamble df with same variable</span>
+<span class="n">formets</span><span class="o">=</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="o">.</span><span class="n">from_records</span><span class="p">(</span><span class="n">df_list_formetted</span><span class="p">)</span>
+<span class="c1"># get vocabdf formets column wise</span>
+<span class="n">unique_formatas</span><span class="o">=</span><span class="n">FormatCalculator</span><span class="o">.</span><span class="n">get_unique_hashes_from_df_columnwise</span><span class="p">(</span><span class="n">formets</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="sponcers-guidelines">
+<h2>Sponcers Guidelines<a class="headerlink" href="#sponcers-guidelines" title="Permalink to this heading">¶</a></h2>
+<section id="please-send-us-email-to-get-sponcers-docs-for-this-project-rajatsmishra-aol-com">
+<h3>please send us email to get sponcers docs for this project <a class="reference external" href="mailto:rajatsmishra&#37;&#52;&#48;aol&#46;com">rajatsmishra<span>&#64;</span>aol<span>&#46;</span>com</a><a class="headerlink" href="#please-send-us-email-to-get-sponcers-docs-for-this-project-rajatsmishra-aol-com" title="Permalink to this heading">¶</a></h3>
+</section>
+</section>
+<section id="project-contribution-guidelines">
+<h2>Project Contribution GuideLines<a class="headerlink" href="#project-contribution-guidelines" title="Permalink to this heading">¶</a></h2>
+<section id="git-page-link-https-github-com-rajat45mishra-dashboardutils-datascience">
+<h3>git page link <a class="reference external" href="https://github.com/rajat45mishra/DashBoardUtils_Datascience">https://github.com/rajat45mishra/DashBoardUtils_Datascience</a><a class="headerlink" href="#git-page-link-https-github-com-rajat45mishra-dashboardutils-datascience" title="Permalink to this heading">¶</a></h3>
+</section>
+<section id="send-us-update-suggestions-on-rajatsmishra-aol-com">
+<h3>send us update suggestions on <a class="reference external" href="mailto:rajatsmishra&#37;&#52;&#48;aol&#46;com">rajatsmishra<span>&#64;</span>aol<span>&#46;</span>com</a><a class="headerlink" href="#send-us-update-suggestions-on-rajatsmishra-aol-com" title="Permalink to this heading">¶</a></h3>
+<section id="todo-tasks">
+<h4>todo tasks<a class="headerlink" href="#todo-tasks" title="Permalink to this heading">¶</a></h4>
+<ul class="simple">
+<li><p>add more algorithum in data classifier</p></li>
+</ul>
+<hr class="docutils" />
+<ul class="simple">
+<li><p>add more graph templates in DashBoaredtemplates class</p></li>
+</ul>
+<hr class="docutils" />
+<ul class="simple">
+<li><p>use cases docs and api docs for users</p></li>
+</ul>
+<hr class="docutils" />
+<ul class="simple">
+<li><p>totorials for extracting and scripting formats to solve realword software application optimisation purposes</p></li>
+</ul>
+<hr class="docutils" />
+</section>
+</section>
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">DashboardutilsDatascience</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="usecases.html">USE CASES</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">USE CASES DOCS</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#dashboard-builder-util-generate-all-posibble-stats-from-dataframe-for-datascience-and-visualisation-purposes">dashboard builder util generate all posibble stats from Dataframe for DataScience and visualisation purposes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#above-data-canbe-visualised-like-below">above data canbe visualised like below</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#export-bulk-graphs-for-all-possible-conditions">export bulk graphs for all possible conditions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#calucate-data-formets-for-visualisation-data-for-formets-visulisation-purposes">calucate data formets for visualisation data for formets visulisation purposes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#calucate-data-formets-for-dataframe-data-for-formets-data-optimisation-and-validation-purposes">calucate data formets for dataframe data for formets data optimisation and validation purposes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#optimising-regex-string">optimising_regex string</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#sponcers-guidelines">Sponcers Guidelines</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#please-send-us-email-to-get-sponcers-docs-for-this-project-rajatsmishra-aol-com">please send us email to get sponcers docs for this project rajatsmishra&#64;aol.com</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#project-contribution-guidelines">Project Contribution GuideLines</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#git-page-link-https-github-com-rajat45mishra-dashboardutils-datascience">git page link https://github.com/rajat45mishra/DashBoardUtils_Datascience</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#send-us-update-suggestions-on-rajatsmishra-aol-com">send us update suggestions on rajatsmishra&#64;aol.com</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="modules.html">package</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+  <li><a href="usecases.html">USE CASES</a><ul>
+      <li>Previous: <a href="usecases.html" title="previous chapter">USE CASES</a></li>
+      <li>Next: <a href="modules.html" title="next chapter">package</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2024, Rajat Mishra.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 5.3.0</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

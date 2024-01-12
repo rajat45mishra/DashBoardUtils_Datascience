@@ -1,3 +1,6 @@
+# USE CASES DOCS
+
+
 ### dashboard builder util generate all posibble stats from Dataframe for DataScience and visualisation purposes
 
 ```python
