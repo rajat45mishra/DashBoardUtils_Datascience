@@ -1,2 +1,4 @@
-""" module for dashboared and formets """
+""" module for
+dashboared and formets
+"""
 

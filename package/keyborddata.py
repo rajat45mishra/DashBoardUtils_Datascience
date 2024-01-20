@@ -1,3 +1,4 @@
+"""keyboard format variables"""
 alphabets = [
     "a",
     "b",

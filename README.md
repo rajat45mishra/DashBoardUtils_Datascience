@@ -97,6 +97,21 @@ unique_formatas=FormatCalculator.get_unique_hashes_from_df_columnwise(formets)
 
 ```
 
+### generate data mitter
+```python
+
+from package.formatcalculator import FormatCalculator
+import pandas as pd
+import itertools
+
+# reads df from csv
+df = pd.read_csv("testdata.csv")
+mitter=FormatCalculator.generate_datamiter(df)
+mitter._df.to_excel("test.xlsx")
+# datamiters optimises data acording to keyboard letters
+
+```
+
 ###### [Documentation LINK](https://dashboardutils-datascience.readthedocs.io/en/latest/index.html)
 
 ### Sponcers Guidelines

@@ -1,5 +1,16 @@
+"""dataclassifier
+
+    Raises:
+        NotImplementedError: implementation pending
+
+    Yields:
+        List: returns list
+    """
+PACKAGEMODULE="package.DataClassifier"
+
 class DataClassifier:
-    """DataClassifier classification Data in Defined  algorithm and and their classification format \n
+    """DataClassifier classification Data in Defined  algorithm
+      and and their classification format \n
     -- We can define of algorithum \n
     -- build data classification Process for build data groups"""
 
@@ -16,16 +27,17 @@ class DataClassifier:
         """build data classification Process for build data groups"""
         getalgo = [x for x in self.algorithm if algorithm in list(x.values())][0]
         for name, group in groups:
+            print("finding catagories for {}".format(name))
             catagorical = []
-            for x in group.columns.to_list():
-                if group[x].nunique() > 1:
+            for _x in group.columns.to_list():
+                if group[_x].nunique() > 1:
                     catagorical.append(
                         {
-                            x: {
-                                "lables": [str(x) for x in group[x].unique().tolist()],
+                            _x: {
+                                "lables": [str(x) for x in group[_x].unique().tolist()],
                                 "counts": [
-                                    len(group[group[x] == xs])
-                                    for xs in group[x].unique().tolist()
+                                    len(group[group[_x] == xs])
+                                    for xs in group[_x].unique().tolist()
                                 ],
                             }
                         }
@@ -34,5 +46,5 @@ class DataClassifier:
                 yield catagorical
             else:
                 raise NotImplementedError(
-                    " only hist algorithm is Implemented For adding more option Override build_ploats"
+                    "use hist for now"
                 )
