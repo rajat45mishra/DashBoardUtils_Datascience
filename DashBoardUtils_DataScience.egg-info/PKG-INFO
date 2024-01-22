@@ -1,3 +1,18 @@
+Metadata-Version: 2.1
+Name: DashBoardUtils-DataScience
+Version: 1.35
+Summary: AutoMated visualization Features Extraction For Data Scientists and data format calculater for application developers
+Home-page: UNKNOWN
+Author: Rajat Mishra
+Author-email: rajatsmishra@aol.com
+License: UNKNOWN
+Platform: UNKNOWN
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.6
+Description-Content-Type: text/markdown
+
 ### dashboard builder util generate all posibble stats from Dataframe for DataScience and visualisation purposes
 
 ```python
@@ -134,3 +149,5 @@ mitter._df.to_excel("test.xlsx")
 ###### - use cases docs and api docs for users
 
 ###### - totorials for extracting and scripting formats to solve realword software application optimisation purposes
+
+

@@ -1,9 +1,10 @@
+# bokeh version for diffrent graphs pairs from generated data
+
 """Dashboared templates for visualising data
 
     Returns:
         ploat: figure
     """
-# bokeh version for diffrent graphs pairs from generated data
 
 import random
 import math
