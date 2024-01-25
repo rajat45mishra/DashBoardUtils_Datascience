@@ -1,4 +1,4 @@
-"""calulates formats of data
+"""calculates formats of data
 
     Returns:
         List|str: formatclaculator class
@@ -15,12 +15,17 @@ from package.keyborddata import alphabets, alphabets_upper, numbers, simbols
 
 
 class Mitter:
-    """returns mitter object for validation hasattr df for dataframe transformation"""
+    """returns Mitter object for validation hasattr df for dataframe transformation"""
 
     def __init__(self, _df) -> None:
         self._df = _df
 
     def formatwise_mitter(self):
+        """Groups data formatwise
+
+        Returns:
+            DataFrame: Formatwise Data
+        """
         datalist = []
         for _k, _v in self._df.iterrows():
             data = {}
@@ -38,7 +43,75 @@ class Mitter:
                         valu.append((_x[-1], _v[_x]))
                         data[_x[1]] = str(valu)
             datalist.append(data)
+
         return pd.DataFrame.from_records(datalist)
+    
+
+
+
+    def normalize_seq_patterns(self, seqlist):
+        """generate unique data and ordring from seq
+
+        Args:
+            seqlist (List): seq list of keyboard sequences
+
+        Returns:
+            List[str]: _description_
+        """
+        data = sorted(list(set(seqlist)))
+        sliceseq = []
+        for _x in data:
+            if len(_x) > 1 and sliceseq == []:
+                sliceseq.append(_x[0])
+                sliceseq.append(_x[1])
+            elif len(_x) > 1 and sliceseq != []:
+                sliceseq[0] += _x[0]
+                sliceseq[1] += _x[1]
+            elif len(_x) == 1 and sliceseq != []:
+                sliceseq[0] += _x[0]
+        sliceseq[0] = "".join(sorted(list(set(sliceseq[0]))))
+        sliceseq[1] = "".join(sorted(list(set(sliceseq[1]))))
+        ordd = []
+        for _s in data:
+            if len(_s) > 1:
+                _a = str(sliceseq[0].index(_s[0]))
+                _b = str(sliceseq[1].index(_s[1]))
+                ordd.append("&".join([_a, _b]))
+            elif len(_s) == 1:
+                _a = str(sliceseq[0].index(_s[0]))
+                ordd.append(_a)
+        ordd = ",".join(ordd)
+        seqord = ""
+        for _x in seqlist:
+            seqord += "{}".format(data.index(_x))
+            
+        return [*sliceseq, ordd, seqord]
+    
+
+    
+
+    def regenerate_seq_normalized(self, normlist):
+        """regenerate all data from ordring and seq
+
+        Args:
+            normlist (List[str]): normalized lists
+
+        Returns:
+            List[str]: returns actual sequence of keyboard sequences
+        """
+        values = normlist[0:2]
+        orders = normlist[2:]
+        suborder = []
+        for _x in orders[0].split(","):
+            _x = list(_x)
+            _x[0] = values[0][int(_x[0])]
+            _x[-1] = values[1][int(_x[-1])]
+            _x.remove(_x[1])
+            suborder.append("".join(_x))
+        regenlist = []
+        for _z in list(orders[1]):
+            regenlist.append(suborder[int(_z)])
+        return regenlist
 
 
 class FormatCalculator:
@@ -249,7 +322,7 @@ class FormatCalculator:
                     try:
                         data = int(_x)
                     except ValueError:
-                        if _x == " " or _x == " ":
+                        if _x in (" ",) or _x in (" ",):
                             hashd += r"\s"
                         else:
                             hashd += _x
