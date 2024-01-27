@@ -9,16 +9,37 @@
 import itertools
 import ast
 import re
-from typing import List, Any
+from typing import List, Any, Generator
 import pandas as pd
 from package.keyborddata import alphabets, alphabets_upper, numbers, simbols
+
+
+class Ordring:
+    """ordring seed values and ordring seq"""
+
+    def __init__(self, values: List[str], ordring: List[str]) -> None:
+        """ordring seed values,ordring seq
+
+        Args:
+            values (List[str]): values
+            ordring (List[str]): ordring and pairs
+        """
+        self.values = values
+        self.ordring = ordring
 
 
 class Mitter:
     """returns Mitter object for validation hasattr df for dataframe transformation"""
 
-    def __init__(self, _df) -> None:
+    def __init__(self, _df, colorder: Generator) -> None:
+        """_summary_
+
+        Args:
+            _df (dataframe): _description_
+            colorder (Generator): _description_
+        """
         self._df = _df
+        self.colhashes = colorder
 
     def formatwise_mitter(self):
         """Groups data formatwise
@@ -45,9 +66,19 @@ class Mitter:
             datalist.append(data)
 
         return pd.DataFrame.from_records(datalist)
-    
 
+    def column_wise_format_ordring(self):
+        """_summary_
 
+        Yields:
+            tuple: indexes
+        """
+        colindexes = self.formatwise_mitter().columns.to_list()
+        for _x in list(self.colhashes):
+            yield _x[0], [colindexes.index(_z) for _z in _x[1]]
+
+    def columnwise_data_pattern_ordring_seq(self):
+        pass
 
     def normalize_seq_patterns(self, seqlist):
         """generate unique data and ordring from seq
@@ -84,11 +115,8 @@ class Mitter:
         seqord = ""
         for _x in seqlist:
             seqord += "{}".format(data.index(_x))
-            
-        return [*sliceseq, ordd, seqord]
-    
 
-    
+        return Ordring(sliceseq, [ordd, seqord])
 
     def regenerate_seq_normalized(self, normlist):
         """regenerate all data from ordring and seq
@@ -416,10 +444,7 @@ class FormatCalculator:
             hashed_x = _x
             for _z in list(list(_x.values())[0].keys()):
                 datas = _df[list(_x.keys())[0]].apply(cls.regex_filter, regex=_z)
-
                 datas = datas[datas != False].values.tolist()
-                if list(_x.keys())[0] == "plan_quantity":
-                    _x[list(_x.keys())[0]][_z] = datas
                 hashd = []
                 for _sa in datas:
                     if len(str(_sa)) == 1:
@@ -448,7 +473,10 @@ class FormatCalculator:
             [valueslist], columns=multindex
         )
 
-        return Mitter(output_df_before_optimizing_unique_lists)
+        return Mitter(
+            output_df_before_optimizing_unique_lists,
+            cls.get_unique_hashes_from_df_columnwise(format_hashed_df),
+        )
 
     @classmethod
     def find_max_length(cls, lst):
