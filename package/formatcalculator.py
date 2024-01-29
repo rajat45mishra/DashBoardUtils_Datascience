@@ -31,7 +31,7 @@ class Ordring:
 class Mitter:
     """returns Mitter object for validation hasattr df for dataframe transformation"""
 
-    def __init__(self, _df, colorder: Generator) -> None:
+    def __init__(self, _df,dataset,colorder: Generator) -> None:
         """_summary_
 
         Args:
@@ -64,7 +64,6 @@ class Mitter:
                         valu.append((_x[-1], _v[_x]))
                         data[_x[1]] = str(valu)
             datalist.append(data)
-
         return pd.DataFrame.from_records(datalist)
 
     def column_wise_format_ordring(self):
@@ -77,8 +76,36 @@ class Mitter:
         for _x in list(self.colhashes):
             yield _x[0], [colindexes.index(_z) for _z in _x[1]]
 
+    def merge(self, dicts):
+        result = {}
+        for d in dicts:
+            for key, value in d.items():
+                result.setdefault(key, []).append(value)
+        return result
+
     def columnwise_data_pattern_ordring_seq(self):
-        pass
+        """_summary_
+
+        Returns:
+            _type_: _description_
+        """
+        colfoseq = list(self.column_wise_format_ordring())
+        _dw = self.formatwise_mitter()
+        hashq = []
+        for _x in colfoseq:
+            for s in _x[1]:
+                if isinstance(ast.literal_eval(_dw.iloc[0, s]), list):
+                    for i, aq in enumerate(ast.literal_eval(_dw.iloc[0, s])):
+                        hashq.append({_x[0]: str(s) + "|" + (str(i))})
+        return self.merge(hashq)
+    
+    def get_row_ordring_seq_from_dataset(self):
+        """generate row pattern indexes acording table pattern we have already seq veriations forecasting for n number of row
+
+        Raises:
+            NotImplementedError: need to imple mented
+        """
+        raise NotImplementedError("yet to be implimented")
 
     def normalize_seq_patterns(self, seqlist):
         """generate unique data and ordring from seq
@@ -475,6 +502,7 @@ class FormatCalculator:
 
         return Mitter(
             output_df_before_optimizing_unique_lists,
+            _df,
             cls.get_unique_hashes_from_df_columnwise(format_hashed_df),
         )
 
