@@ -35,11 +35,13 @@ class Mitter:
         """_summary_
 
         Args:
-            _df (dataframe): _description_
+            _df (_type_): _description_
+            dataset (_type_): _description_
             colorder (Generator): _description_
         """
         self._df = _df
         self.colhashes = colorder
+        self.dataset= dataset
 
     def formatwise_mitter(self):
         """Groups data formatwise
@@ -77,11 +79,83 @@ class Mitter:
             yield _x[0], [colindexes.index(_z) for _z in _x[1]]
 
     def merge(self, dicts):
+        """_summary_
+
+        Args:
+            dicts (_type_): _description_
+
+        Returns:
+            _type_: _description_
+        """
         result = {}
         for d in dicts:
             for key, value in d.items():
                 result.setdefault(key, []).append(value)
         return result
+    
+    def search_pat(self,pat, mitter):
+        """_summary_
+
+        Args:
+            pat (_type_): _description_
+            mitter (_type_): _description_
+
+        Returns:
+            _type_: _description_
+        """
+        indexc = ""
+        for x in mitter.columns.to_list():
+            sw = mitter.iloc[0, mitter.columns.get_loc(x)]
+            if isinstance(ast.literal_eval(sw), tuple):
+                if ast.literal_eval(sw)[0] == pat:
+                    indexc += str(mitter.columns.get_loc(x))
+                    indexc += "|"
+                    indexc += "0"
+            elif isinstance(ast.literal_eval(sw), list):
+                if pat in [z[0] for z in ast.literal_eval(sw)]:
+                    indexc += str(mitter.columns.get_loc(x))
+                    indexc += "|"
+                    indexc += str([z[0] for z in ast.literal_eval(sw)].index(pat))
+        return indexc
+    
+    def row_patterns(self,df):
+        """_summary_
+
+        Args:
+            df (_type_): _description_
+
+        Returns:
+            _type_: _description_
+        """
+        a=self.formatwise_mitter()
+        keyboardsq=alphabets + alphabets_upper + simbols + [str(x) for x in numbers]
+        keyboardsq.append(' ')
+        rowpatterns=[]
+        for x in df.index.to_list():
+            data=df.iloc[x].to_list()
+            hashes=[]
+            for z in data:
+                s=None
+                if len(str(z))==1:
+                    s=str(keyboardsq.index(str(z)))
+                else:
+                    dummy=[]
+                    for q in list(str(z)):
+                        try:
+                            dummy.append(str(keyboardsq.index(str(q))))
+                        except Exception as E:
+                            pass
+                    s=str(dummy)
+                hashes.append(s)
+            rowpatterns.append(hashes)
+        w = []
+        for i, x in enumerate(rowpatterns):
+            d = []
+            for z in x:
+                d.append(self.search_pat(z, a))
+            w.append(",".join(d))
+        return w
+
 
     def columnwise_data_pattern_ordring_seq(self):
         """_summary_
@@ -98,14 +172,32 @@ class Mitter:
                     for i, aq in enumerate(ast.literal_eval(_dw.iloc[0, s])):
                         hashq.append({_x[0]: str(s) + "|" + (str(i))})
         return self.merge(hashq)
+
+    def get_row_ordring_seq_from_dataset(self,dataset):
+        """generate row pattern indexes acording to table pattern 
+
+        Args:
+            dataset (Dataframe): pd.read_csv("path/to/tabularfile")
+
+        Returns:
+            Dataframe: row patterns
+        """
+        
+
+        return self.row_patterns(dataset)
     
-    def get_row_ordring_seq_from_dataset(self):
-        """generate row pattern indexes acording table pattern we have already seq veriations forecasting for n number of row
+    def forecast_row_values(self,length:int,alorithum:object):
+        """_summary_
+
+        Args:
+            length (int): _description_
+            alorithum (object): _description_
 
         Raises:
-            NotImplementedError: need to imple mented
+            NotImplementedError: _description_
         """
-        raise NotImplementedError("yet to be implimented")
+        raise NotImplementedError("yet to be implemented")
+
 
     def normalize_seq_patterns(self, seqlist):
         """generate unique data and ordring from seq
