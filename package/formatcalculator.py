@@ -92,7 +92,7 @@ class Mitter:
             for key, value in d.items():
                 result.setdefault(key, []).append(value)
         return result
-    
+
     def search_pat(self,pat, mitter):
         """_summary_
 
@@ -117,7 +117,7 @@ class Mitter:
                     indexc += "|"
                     indexc += str([z[0] for z in ast.literal_eval(sw)].index(pat))
         return indexc
-    
+
     def row_patterns(self,df):
         """_summary_
 
@@ -174,7 +174,7 @@ class Mitter:
         return self.merge(hashq)
 
     def get_row_ordring_seq_from_dataset(self,dataset):
-        """generate row pattern indexes acording to table pattern 
+        """generate row pattern indexes acording to table pattern
 
         Args:
             dataset (Dataframe): pd.read_csv("path/to/tabularfile")
@@ -182,10 +182,10 @@ class Mitter:
         Returns:
             Dataframe: row patterns
         """
-        
+
 
         return self.row_patterns(dataset)
-    
+
     def forecast_row_values(self,length:int,alorithum:object):
         """_summary_
 
