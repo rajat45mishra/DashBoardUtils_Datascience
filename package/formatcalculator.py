@@ -6,6 +6,7 @@
     Yields:
         List: list
     """
+
 import itertools
 import ast
 import re
@@ -31,7 +32,7 @@ class Ordring:
 class Mitter:
     """returns Mitter object for validation hasattr df for dataframe transformation"""
 
-    def __init__(self, _df,dataset,colorder: Generator) -> None:
+    def __init__(self, _df, dataset, colorder: Generator) -> None:
         """_summary_
 
         Args:
@@ -41,7 +42,7 @@ class Mitter:
         """
         self._df = _df
         self.colhashes = colorder
-        self.dataset= dataset
+        self.dataset = dataset
 
     def formatwise_mitter(self):
         """Groups data formatwise
@@ -93,7 +94,7 @@ class Mitter:
                 result.setdefault(key, []).append(value)
         return result
 
-    def search_pat(self,pat, mitter):
+    def search_pat(self, pat, mitter):
         """_summary_
 
         Args:
@@ -116,9 +117,11 @@ class Mitter:
                     indexc += str(mitter.columns.get_loc(x))
                     indexc += "|"
                     indexc += str([z[0] for z in ast.literal_eval(sw)].index(pat))
+            if indexc != "":
+                break
         return indexc
 
-    def row_patterns(self,df):
+    def row_patterns(self, df):
         """_summary_
 
         Args:
@@ -127,25 +130,25 @@ class Mitter:
         Returns:
             _type_: _description_
         """
-        a=self.formatwise_mitter()
-        keyboardsq=alphabets + alphabets_upper + simbols + [str(x) for x in numbers]
-        keyboardsq.append(' ')
-        rowpatterns=[]
+        a = self.formatwise_mitter()
+        keyboardsq = alphabets + alphabets_upper + simbols + [str(x) for x in numbers]
+        keyboardsq.append(" ")
+        rowpatterns = []
         for x in df.index.to_list():
-            data=df.iloc[x].to_list()
-            hashes=[]
+            data = df.iloc[x].to_list()
+            hashes = []
             for z in data:
-                s=None
-                if len(str(z))==1:
-                    s=str(keyboardsq.index(str(z)))
+                s = None
+                if len(str(z)) == 1:
+                    s = str(keyboardsq.index(str(z)))
                 else:
-                    dummy=[]
+                    dummy = []
                     for q in list(str(z)):
                         try:
                             dummy.append(str(keyboardsq.index(str(q))))
                         except Exception as E:
                             pass
-                    s=str(dummy)
+                    s = str(dummy)
                 hashes.append(s)
             rowpatterns.append(hashes)
         w = []
@@ -155,7 +158,6 @@ class Mitter:
                 d.append(self.search_pat(z, a))
             w.append(",".join(d))
         return w
-
 
     def columnwise_data_pattern_ordring_seq(self):
         """_summary_
@@ -173,7 +175,115 @@ class Mitter:
                         hashq.append({_x[0]: str(s) + "|" + (str(i))})
         return self.merge(hashq)
 
-    def get_row_ordring_seq_from_dataset(self,dataset):
+    def get_ordring_seq_tuple(self, row_ordring_seq):
+        """_summary_
+
+        Args:
+            row_ordring_seq (_type_): _description_
+
+        Returns:
+            _type_: _description_
+        """
+        a = [x.split(",") for x in row_ordring_seq]
+        ws = []
+        for aq in a:
+            rewu = []
+            for w in aq:
+                rew = w.split("|")
+                if len(rew[0]) > 1:
+                    rew[0] = tuple(list(rew[0]))
+                else:
+                    rew[0] = tuple(rew[0])
+                if len(rew[1]) > 1:
+                    rew[1] = tuple(list(rew[0]))
+                else:
+                    rew[1] = tuple(rew[1])
+                rewu.append(str(tuple(rew)))
+            ws.append(rewu)
+        return ws
+
+    def generate_itemwise_data(self, df, iterlen, var):
+        """_summary_
+
+        Args:
+            df (_type_): _description_
+            iterlen (_type_): _description_
+            var (_type_): _description_
+
+        Returns:
+            _type_: _description_
+        """
+        iterwisedata = []
+        for x in range(iterlen):
+            dummy = []
+            for z in df.columns.to_list():
+                cols = []
+                for p in df.iloc[:, df.columns.get_loc(z)].to_list():
+                    sd = ast.literal_eval(p)
+                    if len(sd[var]) >= x + 1:
+                        cols.append(sd[var][x])
+                    else:
+                        cols.append("*")
+                dummy.append(cols)
+            iterwisedata.append(dummy)
+        return iterwisedata
+
+    def formatted_rows(self, df, iterlen, part):
+        """_summary_
+
+        Args:
+            df (_type_): _description_
+            iterlen (_type_): _description_
+            part (_type_): _description_
+
+        Returns:
+            _type_: _description_
+        """
+        combi = []
+        for x in range(part):
+            combi.append(self.get_row_optimised(df, iterlen, x))
+        final = []
+        for z in range(len(combi[0])):
+            final.append(combi[0][z] + "|" + combi[1][z])
+        return final
+
+    def get_row_optimised(self, df, iterlen, part):
+        """_summary_
+
+        Args:
+            df (_type_): _description_
+            iterlen (_type_): _description_
+            part (_type_): _description_
+
+        Returns:
+            _type_: _description_
+        """
+        qs = []
+        for x in self.generate_itemwise_data(df, iterlen, part):
+            data = []
+            for z in x:
+                hashc = ""
+                groups = (
+                    (key, sum(1 for _ in values))
+                    for (key, values) in itertools.groupby(z)
+                )
+                for color, count in groups:
+                    hashc += "?"
+                    hashc += color
+                    hashc += "({})".format(count)
+                data.append((hashc[1:]))
+            qs.append(data)
+        alog = []
+        for i, x in enumerate(qs):
+            for w, s in enumerate(x):
+                if i == 0:
+                    alog.append(s)
+                else:
+                    alog[w] += "+"
+                    alog[w] += s
+        return alog
+
+    def get_row_ordring_seq_from_dataset(self, dataset, iterlen, part=2):
         """generate row pattern indexes acording to table pattern
 
         Args:
@@ -182,11 +292,12 @@ class Mitter:
         Returns:
             Dataframe: row patterns
         """
+        ws = self.get_ordring_seq_tuple(self.row_patterns(dataset))
 
+        df = pd.DataFrame.from_records(data=ws, columns=ws[0])
+        return self.formatted_rows(df, iterlen, part)
 
-        return self.row_patterns(dataset)
-
-    def forecast_row_values(self,length:int,alorithum:object):
+    def forecast_row_values(self, length: int, alorithum: object):
         """_summary_
 
         Args:
@@ -197,7 +308,6 @@ class Mitter:
             NotImplementedError: _description_
         """
         raise NotImplementedError("yet to be implemented")
-
 
     def normalize_seq_patterns(self, seqlist):
         """generate unique data and ordring from seq
@@ -262,7 +372,6 @@ class Mitter:
 
 
 class FormatCalculator:
-
     """FormatCalculator class fetches formets from any type of data input
     data should be in df or records format and helps us to do \n
      analysis over it to fetch format and itration format and seeds from data

@@ -35,7 +35,7 @@ class DashboardElementsBuilder:
         possible Catagories of Data"""
         alldata_groups = []
         for _x in columns:
-            if not isinstance(self.prepare_sections(columns)[_x],datetime):
+            if not isinstance(self.prepare_sections(columns)[_x], datetime):
                 alldata_groups.append(self.prepare_sections(columns).groupby([_x]))
             else:
                 alldata_groups.append(

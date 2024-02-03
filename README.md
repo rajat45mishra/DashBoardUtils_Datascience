@@ -113,6 +113,25 @@ mitter._df.to_excel("test.xlsx")
 
 ```
 
+### optimising and manageing large datasets with mitter and row patterns with constructive maths
+
+```python
+from package.formatcalculator import FormatCalculator
+import pandas as pd
+import itertools
+import ast
+
+# reads df from csv
+df             = pd.read_csv("tw.csv")
+
+mitter         = FormatCalculator.generate_datamiter(df)
+a              = mitter.formatwise_mitter()
+# get optimised row pattern for data ordring management
+a             =  mitter.get_row_ordring_seq_from_dataset(df.head(10),3)
+
+
+```
+
 ###### [Documentation LINK](https://dashboardutils-datascience.readthedocs.io/en/latest/index.html)
 
 ### Sponcers Guidelines

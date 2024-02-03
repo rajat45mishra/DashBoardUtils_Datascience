@@ -6,7 +6,8 @@
     Yields:
         List: returns list
     """
-PACKAGEMODULE="package.DataClassifier"
+PACKAGEMODULE = "package.DataClassifier"
+
 
 class DataClassifier:
     """DataClassifier classification Data in Defined  algorithm
@@ -45,6 +46,4 @@ class DataClassifier:
             if getalgo["algorithm"] == "hist":
                 yield catagorical
             else:
-                raise NotImplementedError(
-                    "use hist for now"
-                )
+                raise NotImplementedError("use hist for now")
