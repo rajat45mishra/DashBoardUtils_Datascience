@@ -132,6 +132,20 @@ a             =  mitter.get_row_ordring_seq_from_dataset(df.head(10),3)
 
 ```
 
+### optimizing str patterns
+
+```Python
+from package.formatcalculator import FormatCalculator,Mitter
+import pandas as pd
+import ast
+# reads df from csv
+df             = pd.read_csv("testfile.csv")
+mitter         = FormatCalculator.generate_datamiter(df)
+mitter         = mitter.formatwise_mitter()
+formateld      = Mitter.hash_str_patterns(mitter)
+                
+```
+
 ###### [Documentation LINK](https://dashboardutils-datascience.readthedocs.io/en/latest/index.html)
 
 ### Sponcers Guidelines

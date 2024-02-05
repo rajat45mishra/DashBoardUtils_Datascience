@@ -250,6 +250,93 @@ class Mitter:
             final.append(combi[0][z] + "|" + combi[1][z])
         return final
 
+    @classmethod
+    def get_vertical_str_slices(cls, seqlist, iterlen):
+        """_summary_
+
+        Args:
+            seqlist (_type_): _description_
+            iterlen (_type_): _description_
+
+        Returns:
+        _    type_: _description_
+        """
+        seq = []
+        for x in seqlist:
+            try:
+                seq.append(x[iterlen])
+            except Exception as E:
+                seq.append("*")
+        return seq
+
+    @classmethod
+    def update_mitter(cls, val):
+        """_summary_
+
+        Args:
+            val (_type_): _description_
+
+        Returns:
+        _    type_: _description_
+        """
+        gew = []
+        for sq in range(len(max(ast.literal_eval(val[0]), key=len))):
+            gew.append(cls.get_vertical_str_slices(ast.literal_eval(val[0]), sq))
+        data = []
+        for z in gew:
+            hashc = ""
+            groups = (
+                (key, sum(1 for _ in values)) for (key, values) in itertools.groupby(z)
+            )
+            for color, count in groups:
+                hashc += "?"
+                hashc += color
+                hashc += "({})".format(count)
+            data.append(hashc)
+
+        return data
+
+    @classmethod
+    def hash_str_patterns(cls, mitter):
+        """_summary_
+
+        Args:
+            mitter (_type_): _description_
+
+        Returns:
+        _    type_: _description_
+        """
+        for x in mitter.columns.to_list():
+            val = ast.literal_eval(mitter.iloc[0, mitter.columns.get_loc(x)])
+            update_val = None
+            if isinstance(val, list):
+                yt = []
+                for z in val:
+                    try:
+                        aq = int(z[0])
+                    except Exception as E:
+                        pass
+                    if isinstance(aq, int):
+                        aq = (str([str(aq)]),)
+                    else:
+                        aq = z
+                    data = cls.update_mitter(aq)
+                    data = "+".join(data)
+                    yt.append(data)
+                update_val = str(yt)
+            if isinstance(val, tuple):
+                try:
+                    val = int(val[0])
+                except Exception as E:
+                    pass
+                if isinstance(val, int):
+                    val = str([str(val)])
+                data = cls.update_mitter(val)
+                data = "+".join(data)
+                update_val = data
+            mitter.iloc[0, mitter.columns.get_loc(x)] = update_val
+        return mitter
+
     def get_row_optimised(self, df, iterlen, part):
         """_summary_
 
@@ -311,6 +398,7 @@ class Mitter:
             NotImplementedError: _description_
         """
         raise NotImplementedError("yet to be implemented")
+
 
     def normalize_seq_patterns(self, seqlist):
         """generate unique data and ordring from seq
