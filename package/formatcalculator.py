@@ -312,6 +312,7 @@ class Mitter:
             if isinstance(val, list):
                 yt = []
                 for z in val:
+                    aq=None
                     try:
                         aq = int(z[0])
                     except Exception as E:
