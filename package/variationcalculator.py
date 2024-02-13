@@ -1,9 +1,13 @@
+"""_summary_
+"""
 # process veriations calculator
 import ast
 import pandas as pd
 from typing import Optional,List
 
 class VERIATIONS:
+    """_summary_
+    """
     def __init__(self, columnsTable: pd.DataFrame, RowTable: pd.DataFrame,keyboard:Optional[List]=None) -> None:
         """_summary_
 
@@ -53,6 +57,15 @@ class VERIATIONS:
         return veriations
 
     def solve_iteration(self,string,filter_params=[]):
+        """_summary_
+
+        Args:
+            string (_type_): _description_
+            filter_params (list, optional): _description_. Defaults to [].
+
+        Returns:
+            _type_: _description_
+        """
         d=string.split("?")
         d=[[x[0]]*int(x.split("(")[-1][0:-1]) for x in d]
         flat_list = []
@@ -61,6 +74,14 @@ class VERIATIONS:
         return flat_list
 
     def add_data_slices(self,datalist):
+        """_summary_
+
+        Args:
+            datalist (_type_): _description_
+
+        Returns:
+            _type_: _description_
+        """
         rows=[]
         for x in range(len(datalist[0])):
             data=[d[x] for d in datalist]
@@ -68,15 +89,37 @@ class VERIATIONS:
         return rows
 
     def get_column_row_pattern(self,formatpattern,patternseq):
+        """_summary_
+
+        Args:
+            formatpattern (_type_): _description_
+            patternseq (_type_): _description_
+
+        Returns:
+            _type_: _description_
+        """
         return "|".join([formatpattern,patternseq])[1:]
 
     def replace_empty_vals(self,rows):
+        """_summary_
+
+        Args:
+            rows (_type_): _description_
+
+        Yields:
+            _type_: _description_
+        """
         for x in rows:
             if "*" in x:
                 x=x.replace("*","")
             yield x
 
     def generate_row_patterns(self):
+        """_summary_
+
+        Returns:
+            _type_: _description_
+        """
         rowcolslist=[]
         for x in self.RowTable.columns.to_list():
             x=x.split("|")
@@ -93,10 +136,24 @@ class VERIATIONS:
         return rowcolslist
 
     def merge(self,list1, list2):
+        """_summary_
+
+        Args:
+            list1 (_type_): _description_
+            list2 (_type_): _description_
+
+        Returns:
+            _type_: _description_
+        """
         merged_list = ["|".join((list1[i], list2[i])) for i in range(0, len(list1))]
         return merged_list
 
     def get_columnswise_rowpatterns(self):
+        """_summary_
+
+        Returns:
+            _type_: _description_
+        """
         colrows=self.generate_row_patterns()
         col=[]
         for x in colrows:
@@ -106,6 +163,11 @@ class VERIATIONS:
         return pd.DataFrame.from_dict(dataframeconst)
 
     def transform_sequences_to_keyboard_values(self):
+        """_summary_
+
+        Yields:
+            _type_: _description_
+        """
         for x,y in self.get_columnswise_rowpatterns().iterrows():
             ye=[]
             for z in self.get_columnswise_rowpatterns().columns.to_list():
@@ -127,6 +189,11 @@ class VERIATIONS:
             yield ye
 
     def format_keyboard_values(self):
+        """_summary_
+
+        Returns:
+            _type_: _description_
+        """
         rows=[]
         for x in list(self.transform_sequences_to_keyboard_values()):
             wq=[]
@@ -142,13 +209,18 @@ class VERIATIONS:
             rows.append(wq)
         return pd.DataFrame(rows,columns=[x for x in range(len(rows[0]))])
 
-    def traform_keybord_seq_to_data(self):
+    def transform_keybord_seq_to_data(self):
+        """_summary_
+
+        Returns:
+            _type_: _description_
+        """
         df=self.format_keyboard_values()
         result=[]
         for k,v in df.iterrows():
             data     = v.values.tolist()
+            datas=[]
             if data != [] and self.keyboard is not None:
-                datas=[]
                 for g in data:
                     try:
                         d=ast.literal_eval(g)

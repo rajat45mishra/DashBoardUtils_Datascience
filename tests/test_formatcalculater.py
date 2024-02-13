@@ -237,18 +237,21 @@ def test_columnwise_datasets_org():
 def test_data_regeneration_process():
     import pandas as pd
     from package.variationcalculator import VERIATIONS
+    from package.keyborddata import alphabets,alphabets_upper,simbols,numbers
     data             =  pd.DataFrame(
         {"var1": ["a", "b", "c"], "other_var": [4, 7, 3], "yet_another": [8, 0, 2]}
     )
     format_hashed_df = FormatCalculator.hash_df_formats(data)
-
-    df             = pd.read_csv("testfile.csv")
-
-    mitter         = FormatCalculator.generate_datamiter(df)
+    mitter         = FormatCalculator.generate_datamiter(data)
     mitter2        = mitter.formatwise_mitter()
     formateld      = Mitter.hash_str_patterns(mitter2)
-
-    veri           = VERIATIONS(formateld,pd.DataFrame(columns=mitter.get_row_ordring_seq_from_dataset(df,iterlen=1)))
+    keyboards = (
+            alphabets + alphabets_upper + simbols + [str(x) for x in numbers] + [" "]
+        )
+    veri           = VERIATIONS(formateld,pd.DataFrame(columns=mitter.get_row_ordring_seq_from_dataset(data,iterlen=1)),keyboard=keyboards)
+    result=veri.transform_keybord_seq_to_data()
+    assert result[0].values.tolist()==["a", "b", "c"]
+    assert isinstance(data,pd.DataFrame)
     assert isinstance(format_hashed_df,pd.DataFrame)
     assert isinstance(veri,VERIATIONS)
 
