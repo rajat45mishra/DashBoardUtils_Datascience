@@ -292,7 +292,7 @@ class Mitter:
                 hashc += "?"
                 hashc += color
                 hashc += "({})".format(count)
-            data.append(hashc)
+            data.append(hashc[1:])
 
         return data
 
@@ -312,7 +312,7 @@ class Mitter:
             if isinstance(val, list):
                 yt = []
                 for z in val:
-                    aq=None
+                    aq = None
                     try:
                         aq = int(z[0])
                     except Exception as E:
@@ -400,7 +400,6 @@ class Mitter:
         """
         raise NotImplementedError("yet to be implemented")
 
-
     def normalize_seq_patterns(self, seqlist):
         """generate unique data and ordring from seq
 
@@ -461,7 +460,6 @@ class Mitter:
         for _z in list(orders[1]):
             regenlist.append(suborder[int(_z)])
         return regenlist
-
 
 class FormatCalculator:
     """FormatCalculator class fetches formets from any type of data input

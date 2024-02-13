@@ -146,6 +146,27 @@ formateld      = Mitter.hash_str_patterns(mitter)
                 
 ```
 
+### calculate _ veriations on row and cols
+
+```Python
+from package.formatcalculator import FormatCalculator,Mitter
+import pandas as pd
+from package.variationcalculator import VERIATIONS
+
+# reads df from csv
+df             = pd.read_csv("testfile.csv")
+
+mitter         = FormatCalculator.generate_datamiter(df)
+mitter2        = mitter.formatwise_mitter()
+formateld      = Mitter.hash_str_patterns(mitter2)
+
+veri           = VERIATIONS(formateld,pd.DataFrame(columns=mitter.get_row_ordring_seq_from_dataset(df,iterlen=3)))
+
+cols           = veri.formats_and_no_of_patterns()
+sw             = veri.row_sequance_veriations()
+
+```
+
 ###### [Documentation LINK](https://dashboardutils-datascience.readthedocs.io/en/latest/index.html)
 
 ### Sponcers Guidelines
