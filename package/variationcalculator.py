@@ -1,10 +1,10 @@
 # process veriations calculator
 import ast
 import pandas as pd
-
+from typing import Optional,List
 
 class VERIATIONS:
-    def __init__(self, columnsTable: pd.DataFrame, RowTable: pd.DataFrame) -> None:
+    def __init__(self, columnsTable: pd.DataFrame, RowTable: pd.DataFrame,keyboard:Optional[List]=None) -> None:
         """_summary_
 
         Args:
@@ -12,7 +12,8 @@ class VERIATIONS:
             RowTable (pd.DataFrame): _description_
         """
         self.columnsTable = columnsTable
-        self.RowTable = RowTable
+        self.RowTable     = RowTable
+        self.keyboard     = keyboard
 
     def formats_and_no_of_patterns(self):
         """_summary_
@@ -140,8 +141,22 @@ class VERIATIONS:
                 wq.append(pds)
             rows.append(wq)
         return pd.DataFrame(rows,columns=[x for x in range(len(rows[0]))])
-    
+
     def traform_keybord_seq_to_data(self):
-        pass
+        df=self.format_keyboard_values()
+        result=[]
+        for k,v in df.iterrows():
+            data     = v.values.tolist()
+            if data != [] and self.keyboard is not None:
+                datas=[]
+                for g in data:
+                    try:
+                        d=ast.literal_eval(g)
+                    except Exception as E:
+                        d=g
+                    da="".join([self.keyboard[int(e)] for e in d])
+                    datas.append(da)
+            result.append(datas)
+        return pd.DataFrame(result,columns=[x for x in range(len(result[0]))])
 
 

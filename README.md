@@ -167,6 +167,27 @@ sw             = veri.row_sequance_veriations()
 
 ```
 
+### regenerate using Veriations in seq
+
+```Python
+from package.formatcalculator import FormatCalculator,Mitter
+import pandas as pd
+from package.variationcalculator import VERIATIONS
+from package.keyborddata import *
+# reads df from csv
+df             = pd.read_csv("testfile.csv")
+
+mitter         = FormatCalculator.generate_datamiter(df)
+mitter2        = mitter.formatwise_mitter()
+formateld      = Mitter.hash_str_patterns(mitter2)
+keyboards = (
+            alphabets + alphabets_upper + simbols + [str(x) for x in numbers] + [" "]
+        )
+veri=VERIATIONS(formateld,pd.DataFrame(columns=mitter.get_row_ordring_seq_from_dataset(df,iterlen=3)),keyboard=keyboards)
+veri.traform_keybord_seq_to_data()       
+
+```
+
 ###### [Documentation LINK](https://dashboardutils-datascience.readthedocs.io/en/latest/index.html)
 
 ### Sponcers Guidelines
