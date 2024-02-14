@@ -89,8 +89,8 @@ class Mitter:
             _type_: _description_
         """
         result = {}
-        for d in dicts:
-            for key, value in d.items():
+        for _d in dicts:
+            for key, value in _d.items():
                 result.setdefault(key, []).append(value)
         return result
 
@@ -105,16 +105,16 @@ class Mitter:
             _type_: _description_
         """
         indexc = ""
-        for x in mitter.columns.to_list():
-            sw = mitter.iloc[0, mitter.columns.get_loc(x)]
+        for _x in mitter.columns.to_list():
+            sw = mitter.iloc[0, mitter.columns.get_loc(_x)]
             if isinstance(ast.literal_eval(sw), tuple):
                 if ast.literal_eval(sw)[0] == pat:
-                    indexc += str(mitter.columns.get_loc(x))
+                    indexc += str(mitter.columns.get_loc(_x))
                     indexc += "|"
                     indexc += "0"
             elif isinstance(ast.literal_eval(sw), list):
                 if pat in [z[0] for z in ast.literal_eval(sw)]:
-                    indexc += str(mitter.columns.get_loc(x))
+                    indexc += str(mitter.columns.get_loc(_x))
                     indexc += "|"
                     indexc += str([z[0] for z in ast.literal_eval(sw)].index(pat))
             if indexc != "":
@@ -130,34 +130,34 @@ class Mitter:
         Returns:
             _type_: _description_
         """
-        a = self.formatwise_mitter()
+        _a = self.formatwise_mitter()
         keyboardsq = alphabets + alphabets_upper + simbols + [str(x) for x in numbers]
         keyboardsq.append(" ")
         rowpatterns = []
-        for x in df.index.to_list():
-            data = df.iloc[x].to_list()
+        for _x in df.index.to_list():
+            data = df.iloc[_x].to_list()
             hashes = []
-            for z in data:
-                s = None
-                if len(str(z)) == 1:
-                    s = str(keyboardsq.index(str(z)))
+            for _z in data:
+                _s = None
+                if len(str(_z)) == 1:
+                    _s = str(keyboardsq.index(str(_z)))
                 else:
                     dummy = []
-                    for q in list(str(z)):
+                    for _q in list(str(_z)):
                         try:
-                            dummy.append(str(keyboardsq.index(str(q))))
-                        except Exception as E:
+                            dummy.append(str(keyboardsq.index(str(_q))))
+                        except IndexError:
                             pass
-                    s = str(dummy)
-                hashes.append(s)
+                    _s = str(dummy)
+                hashes.append(_s)
             rowpatterns.append(hashes)
-        w = []
-        for i, x in enumerate(rowpatterns):
-            d = []
-            for z in x:
-                d.append(self.search_pat(z, a))
-            w.append(",".join(d))
-        return w
+        _w = []
+        for _i, _x in enumerate(rowpatterns):
+            _d = []
+            for _z in _x:
+                _d.append(self.search_pat(_z, _a))
+            _w.append(",".join(_d))
+        return _w
 
     def columnwise_data_pattern_ordring_seq(self):
         """_summary_
@@ -169,10 +169,10 @@ class Mitter:
         _dw = self.formatwise_mitter()
         hashq = []
         for _x in colfoseq:
-            for s in _x[1]:
-                if isinstance(ast.literal_eval(_dw.iloc[0, s]), list):
-                    for i, aq in enumerate(ast.literal_eval(_dw.iloc[0, s])):
-                        hashq.append({_x[0]: str(s) + "|" + (str(i))})
+            for _s in _x[1]:
+                if isinstance(ast.literal_eval(_dw.iloc[0, _s]), list):
+                    for _i, aq in enumerate(ast.literal_eval(_dw.iloc[0, _s])):
+                        hashq.append({_x[0]: str(_s) + "|" + (str(_i))})
         return self.merge(hashq)
 
     def get_ordring_seq_tuple(self, row_ordring_seq):
@@ -184,12 +184,12 @@ class Mitter:
         Returns:
             _type_: _description_
         """
-        a = [x.split(",") for x in row_ordring_seq]
+        _a = [x.split(",") for x in row_ordring_seq]
         ws = []
-        for aq in a:
+        for aq in _a:
             rewu = []
-            for w in aq:
-                rew = w.split("|")
+            for _w in aq:
+                rew = _w.split("|")
                 if len(rew[0]) > 1:
                     rew[0] = tuple(list(rew[0]))
                 else:
@@ -214,17 +214,17 @@ class Mitter:
             _type_: _description_
         """
         iterwisedata = []
-        for x in range(iterlen):
+        for _x in range(iterlen):
             dummy = []
-            for z in df.columns.to_list():
+            for _z in df.columns.to_list():
                 cols = []
-                for p in df.iloc[:, df.columns.get_loc(z)].values.tolist():
+                for _p in df.iloc[:, df.columns.get_loc(_z)].values.tolist():
                     try:
-                        sd = ast.literal_eval(p)
-                    except Exception as E:
-                        sd = p
-                    if len(sd[var]) >= x + 1:
-                        cols.append(sd[var][x])
+                        sd = ast.literal_eval(_p)
+                    except TypeError:
+                        sd = _p
+                    if len(sd[var]) >= _x + 1:
+                        cols.append(sd[var][_x])
                     else:
                         cols.append("*")
                 dummy.append(cols)
@@ -243,11 +243,11 @@ class Mitter:
             _type_: _description_
         """
         combi = []
-        for x in range(part):
-            combi.append(self.get_row_optimised(df, iterlen, x))
+        for _x in range(part):
+            combi.append(self.get_row_optimised(df, iterlen, _x))
         final = []
-        for z in range(len(combi[0])):
-            final.append(combi[0][z] + "|" + combi[1][z])
+        for _z in range(len(combi[0])):
+            final.append(combi[0][_z] + "|" + combi[1][_z])
         return final
 
     @classmethod
@@ -262,10 +262,10 @@ class Mitter:
         _    type_: _description_
         """
         seq = []
-        for x in seqlist:
+        for _x in seqlist:
             try:
-                seq.append(x[iterlen])
-            except Exception as E:
+                seq.append(_x[iterlen])
+            except IndexError:
                 seq.append("*")
         return seq
 
@@ -301,26 +301,26 @@ class Mitter:
         """_summary_
 
         Args:
-            mitter (_type_): _description_
+            mitter (str): _description_.
 
         Returns:
-        _    type_: _description_
+        _    type_: _description_.
         """
-        for x in mitter.columns.to_list():
-            val = ast.literal_eval(mitter.iloc[0, mitter.columns.get_loc(x)])
+        for _x in mitter.columns.to_list():
+            val = ast.literal_eval(mitter.iloc[0, mitter.columns.get_loc(_x)])
             update_val = None
             if isinstance(val, list):
                 yt = []
-                for z in val:
+                for _z in val:
                     aq = None
                     try:
-                        aq = int(z[0])
-                    except Exception as E:
+                        aq = int(_z[0])
+                    except TypeError:
                         pass
                     if isinstance(aq, int):
                         aq = (str([str(aq)]),)
                     else:
-                        aq = z
+                        aq = _z
                     data = cls.update_mitter(aq)
                     data = "+".join(data)
                     yt.append(data)
@@ -328,14 +328,14 @@ class Mitter:
             if isinstance(val, tuple):
                 try:
                     val = int(val[0])
-                except Exception as E:
+                except TypeError:
                     pass
                 if isinstance(val, int):
                     val = str([str(val)])
                 data = cls.update_mitter(val)
                 data = "+".join(data)
                 update_val = data
-            mitter.iloc[0, mitter.columns.get_loc(x)] = update_val
+            mitter.iloc[0, mitter.columns.get_loc(_x)] = update_val
         return mitter
 
     def get_row_optimised(self, df, iterlen, part):
@@ -350,13 +350,13 @@ class Mitter:
             _type_: _description_
         """
         qs = []
-        for x in self.generate_itemwise_data(df, iterlen, part):
+        for _x in self.generate_itemwise_data(df, iterlen, part):
             data = []
-            for z in x:
+            for _z in _x:
                 hashc = ""
                 groups = (
                     (key, sum(1 for _ in values))
-                    for (key, values) in itertools.groupby(z)
+                    for (key, values) in itertools.groupby(_z)
                 )
                 for color, count in groups:
                     hashc += "?"
@@ -365,13 +365,13 @@ class Mitter:
                 data.append((hashc[1:]))
             qs.append(data)
         alog = []
-        for i, x in enumerate(qs):
-            for w, s in enumerate(x):
-                if i == 0:
-                    alog.append(s)
+        for _i, _x in enumerate(qs):
+            for _w, _s in enumerate(_x):
+                if _i == 0:
+                    alog.append(_s)
                 else:
-                    alog[w] += "+"
-                    alog[w] += s
+                    alog[_w] += "+"
+                    alog[_w] += _s
         return alog
 
     def get_row_ordring_seq_from_dataset(self, dataset, iterlen, part=2):
@@ -460,6 +460,7 @@ class Mitter:
         for _z in list(orders[1]):
             regenlist.append(suborder[int(_z)])
         return regenlist
+
 
 class FormatCalculator:
     """FormatCalculator class fetches formets from any type of data input

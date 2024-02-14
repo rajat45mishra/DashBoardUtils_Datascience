@@ -2,12 +2,12 @@
 """
 # process veriations calculator
 import ast
-import pandas as pd
 from typing import Optional,List
+import pandas as pd
+
 
 class VERIATIONS:
-    """_summary_
-    """
+    """_summary_"""
     def __init__(self, columnsTable: pd.DataFrame, RowTable: pd.DataFrame,keyboard:Optional[List]=None) -> None:
         """_summary_
 
@@ -32,7 +32,7 @@ class VERIATIONS:
                 sw = None
                 try:
                     sw = ast.literal_eval(v[c])
-                except Exception as E:
+                except TypeError:
                     sw = v[c]
                 if isinstance(sw, list):
                     col[c] = len(sw)
@@ -60,12 +60,14 @@ class VERIATIONS:
         """_summary_
 
         Args:
-            string (_type_): _description_
+            string (str): _description_.
             filter_params (list, optional): _description_. Defaults to [].
 
         Returns:
-            _type_: _description_
+            _type_: _description_.
         """
+        if filter_params !=[]:
+            raise NotImplementedError("filter mitter not implemented")
         d=string.split("?")
         d=[[x[0]]*int(x.split("(")[-1][0:-1]) for x in d]
         flat_list = []
@@ -159,7 +161,7 @@ class VERIATIONS:
         for x in colrows:
             x=self.merge(x[0],x[1])
             col.append(x)
-        dataframeconst={x:y for x,y in enumerate(col)}
+        dataframeconst=dict(enumerate(col))
         return pd.DataFrame.from_dict(dataframeconst)
 
     def transform_sequences_to_keyboard_values(self):
@@ -176,7 +178,7 @@ class VERIATIONS:
                 data=self.columnsTable.iloc[0,int(val[0])]
                 try:
                     data=ast.literal_eval(data)
-                except Exception as E:
+                except TypeError:
                     pass
                 if isinstance(data,list):
                     data=data[int(val[1])]
@@ -207,7 +209,7 @@ class VERIATIONS:
                         pds.append(p)
                 wq.append(pds)
             rows.append(wq)
-        return pd.DataFrame(rows,columns=[x for x in range(len(rows[0]))])
+        return pd.DataFrame(rows,columns=list(range(len(rows[0]))))
 
     def transform_keybord_seq_to_data(self):
         """_summary_
@@ -217,18 +219,18 @@ class VERIATIONS:
         """
         df=self.format_keyboard_values()
         result=[]
-        for k,v in df.iterrows():
-            data     = v.values.tolist()
+        for k,_v in df.iterrows():
+            data     = _v.values.tolist()
             datas=[]
             if data != [] and self.keyboard is not None:
-                for g in data:
+                for _g in data:
                     try:
-                        d=ast.literal_eval(g)
-                    except Exception as E:
-                        d=g
-                    da="".join([self.keyboard[int(e)] for e in d])
+                        _d=ast.literal_eval(_g)
+                    except TypeError:
+                        _d=_g
+                    da="".join([self.keyboard[int(e)] for e in _d])
                     datas.append(da)
             result.append(datas)
-        return pd.DataFrame(result,columns=[x for x in range(len(result[0]))])
+        return pd.DataFrame(result,columns=list(range(len(result[0]))))
 
 
