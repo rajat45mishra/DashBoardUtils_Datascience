@@ -221,7 +221,7 @@ class Mitter:
                 for _p in df.iloc[:, df.columns.get_loc(_z)].values.tolist():
                     try:
                         sd = ast.literal_eval(_p)
-                    except TypeError:
+                    except ValueError:
                         sd = _p
                     if len(sd[var]) >= _x + 1:
                         cols.append(sd[var][_x])
@@ -315,7 +315,7 @@ class Mitter:
                     aq = None
                     try:
                         aq = int(_z[0])
-                    except TypeError:
+                    except ValueError:
                         pass
                     if isinstance(aq, int):
                         aq = (str([str(aq)]),)
@@ -328,7 +328,7 @@ class Mitter:
             if isinstance(val, tuple):
                 try:
                     val = int(val[0])
-                except TypeError:
+                except ValueError:
                     pass
                 if isinstance(val, int):
                     val = str([str(val)])

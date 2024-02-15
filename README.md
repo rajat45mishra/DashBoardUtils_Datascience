@@ -184,7 +184,7 @@ keyboards = (
             alphabets + alphabets_upper + simbols + [str(x) for x in numbers] + [" "]
         )
 veri=VERIATIONS(formateld,pd.DataFrame(columns=mitter.get_row_ordring_seq_from_dataset(df,iterlen=3)),keyboard=keyboards)
-veri.traform_keybord_seq_to_data()       
+veri.transform_keybord_seq_to_data()       
 
 ```
 

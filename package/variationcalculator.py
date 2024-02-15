@@ -1,6 +1,3 @@
-"""_summary_
-"""
-# process veriations calculator
 import ast
 from typing import Optional,List
 import pandas as pd
@@ -12,19 +9,14 @@ class VERIATIONS:
         """_summary_
 
         Args:
-            columnsTable (pd.DataFrame): _description_
-            RowTable (pd.DataFrame): _description_
+            columnsTable (pd.DataFrame): _description_.
+            RowTable (pd.DataFrame): _description_.
         """
         self.columnsTable = columnsTable
         self.RowTable     = RowTable
         self.keyboard     = keyboard
 
     def formats_and_no_of_patterns(self):
-        """_summary_
-
-        Returns:
-            _type_: _description_
-        """
         col = {}
         for i, v in self.columnsTable.iterrows():
             cd = self.columnsTable.columns.to_list()
@@ -32,7 +24,7 @@ class VERIATIONS:
                 sw = None
                 try:
                     sw = ast.literal_eval(v[c])
-                except TypeError:
+                except Exception:
                     sw = v[c]
                 if isinstance(sw, list):
                     col[c] = len(sw)
@@ -178,7 +170,7 @@ class VERIATIONS:
                 data=self.columnsTable.iloc[0,int(val[0])]
                 try:
                     data=ast.literal_eval(data)
-                except TypeError:
+                except ValueError:
                     pass
                 if isinstance(data,list):
                     data=data[int(val[1])]
@@ -194,7 +186,7 @@ class VERIATIONS:
         """_summary_
 
         Returns:
-            _type_: _description_
+            _type_: _description_.
         """
         rows=[]
         for x in list(self.transform_sequences_to_keyboard_values()):
@@ -226,7 +218,7 @@ class VERIATIONS:
                 for _g in data:
                     try:
                         _d=ast.literal_eval(_g)
-                    except TypeError:
+                    except ValueError:
                         _d=_g
                     da="".join([self.keyboard[int(e)] for e in _d])
                     datas.append(da)

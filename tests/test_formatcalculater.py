@@ -1,9 +1,8 @@
 import pytest
-
-# test formatcalculater
 from package.formatcalculator import FormatCalculator, Mitter, Ordring
 from typing import Generator
-
+from package.variationcalculator import VERIATIONS
+import pandas as pd
 
 def test_format_df_hash():
     import pandas as pd
@@ -85,7 +84,7 @@ def test_row_patterns():
             "yet_another": [8, 0, 2],
         }
     )
-    mitter = FormatCalculator.generate_datamiter(df)
+    mitter       = FormatCalculator.generate_datamiter(df)
     row_patterns = mitter.row_patterns(df)
     assert isinstance(row_patterns, list)
     assert isinstance(row_patterns[0], str)
@@ -117,7 +116,7 @@ def test_get_row_ordring_seq_from_dataset():
         }
     )
     mitter = FormatCalculator.generate_datamiter(df)
-    mi = mitter.get_row_ordring_seq_from_dataset(df, 3)
+    mi     = mitter.get_row_ordring_seq_from_dataset(df, 3)
     assert isinstance(mi, list)
 
 
@@ -131,38 +130,13 @@ def test_hash_str_patterns():
             "yet_another": [8, 0, 2],
         }
     )
-    mitter = FormatCalculator.generate_datamiter(df)
-    mitter = mitter.formatwise_mitter()
+    mitter      = FormatCalculator.generate_datamiter(df)
+    mitter      = mitter.formatwise_mitter()
     mitter_hash = Mitter.hash_str_patterns(mitter)
     assert isinstance(mitter_hash, pd.DataFrame)
 
 
-def test_veriations_functions():
-    # fixtures requires
-    from package.formatcalculator import FormatCalculator,Mitter
-    import pandas as pd
-    from package.variationcalculator import VERIATIONS
 
-    # reads df from csv
-    df = pd.DataFrame(
-        {
-            "var1": ["a c", "b w c", "c x"],
-            "other_var": [4, 7, 3],
-            "yet_another": [8, 0, 2],
-        }
-    )
-
-    mitter         = FormatCalculator.generate_datamiter(df)
-    mitter2        = mitter.formatwise_mitter()
-    formateld      = Mitter.hash_str_patterns(mitter2)
-
-    veri           = VERIATIONS(formateld,pd.DataFrame(columns=mitter.get_row_ordring_seq_from_dataset(df,iterlen=3)))
-
-    cols           = veri.formats_and_no_of_patterns()
-    sw             = veri.row_sequance_veriations()
-
-    assert isinstance(cols,dict)
-    assert isinstance(sw,list)
 
 
 def test_columnwise_datasets_org():
@@ -173,9 +147,9 @@ def test_columnwise_datasets_org():
         {"var1": ["a", "b", "c"], "other_var": [4, 7, 3], "yet_another": [8, 0, 2]}
     )
     format_hashed_df = FormatCalculator.hash_df_formats(data)
-    finaldata = []
+    finaldata        = []
     for x in format_hashed_df.columns.to_list():    
-        colms = format_hashed_df[x].values.tolist()
+        colms          = format_hashed_df[x].values.tolist()
         my_list_count1 = {i: colms.count(i) for i in colms}
         finaldata.append({x: my_list_count1})
 
@@ -242,18 +216,34 @@ def test_data_regeneration_process():
         {"var1": ["a", "b", "c"], "other_var": [4, 7, 3], "yet_another": [8, 0, 2]}
     )
     format_hashed_df = FormatCalculator.hash_df_formats(data)
-    mitter         = FormatCalculator.generate_datamiter(data)
-    mitter2        = mitter.formatwise_mitter()
-    formateld      = Mitter.hash_str_patterns(mitter2)
-    keyboards = (
+    mitter           = FormatCalculator.generate_datamiter(data)
+    mitter2          = mitter.formatwise_mitter()
+    formateld        = Mitter.hash_str_patterns(mitter2)
+    keyboards        = (
             alphabets + alphabets_upper + simbols + [str(x) for x in numbers] + [" "]
         )
-    veri           = VERIATIONS(formateld,pd.DataFrame(columns=mitter.get_row_ordring_seq_from_dataset(data,iterlen=1)),keyboard=keyboards)
-    result=veri.transform_keybord_seq_to_data()
+    veri             = VERIATIONS(formateld,pd.DataFrame(columns=mitter.get_row_ordring_seq_from_dataset(data,iterlen=1)),keyboard=keyboards)
+    result           = veri.transform_keybord_seq_to_data()
     assert result[0].values.tolist()==["a", "b", "c"]
     assert isinstance(data,pd.DataFrame)
     assert isinstance(format_hashed_df,pd.DataFrame)
     assert isinstance(veri,VERIATIONS)
 
 
+def test_veriations_functions():
+    df             = pd.DataFrame(
+        {
+            "var1": ["a c", "b w c", "c x"],
+            "other_var": [4, 7, 3],
+            "yet_another": [8, 0, 2],
+        }
+    )
+    mitter         = FormatCalculator.generate_datamiter(df)
+    mitter2        = mitter.formatwise_mitter()
+    formateld      = Mitter.hash_str_patterns(mitter2)
+    veri           = VERIATIONS(formateld,pd.DataFrame(columns=mitter.get_row_ordring_seq_from_dataset(df,iterlen=3)))
+    cols           = veri.formats_and_no_of_patterns()
+    sw             = veri.row_sequance_veriations()
+    assert isinstance(cols,dict)
+    assert isinstance(sw,list)
 
