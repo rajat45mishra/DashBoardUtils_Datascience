@@ -1,11 +1,21 @@
 import ast
-from typing import Optional,List
+import itertools
+from typing import Optional, List
 import pandas as pd
+
+from package.formatcalculator import FormatCalculator
 
 
 class VERIATIONS:
     """_summary_"""
-    def __init__(self, columnsTable: pd.DataFrame, RowTable: pd.DataFrame,keyboard:Optional[List]=None) -> None:
+
+    def __init__(
+        self,
+        columnsTable: pd.DataFrame,
+        RowTable: pd.DataFrame,
+        keyboard: Optional[List] = None,
+        Mitter: object = None,
+    ) -> None:
         """_summary_
 
         Args:
@@ -13,8 +23,9 @@ class VERIATIONS:
             RowTable (pd.DataFrame): _description_.
         """
         self.columnsTable = columnsTable
-        self.RowTable     = RowTable
-        self.keyboard     = keyboard
+        self.RowTable = RowTable
+        self.keyboard = keyboard
+        self.Mitter = Mitter
 
     def formats_and_no_of_patterns(self):
         col = {}
@@ -48,7 +59,7 @@ class VERIATIONS:
             veriations.append({i: [s, d]})
         return veriations
 
-    def solve_iteration(self,string,filter_params=[]):
+    def solve_iteration(self, string, filter_params=[]):
         """_summary_
 
         Args:
@@ -58,16 +69,16 @@ class VERIATIONS:
         Returns:
             _type_: _description_.
         """
-        if filter_params !=[]:
+        if filter_params != []:
             raise NotImplementedError("filter mitter not implemented")
-        d=string.split("?")
-        d=[[x[0]]*int(x.split("(")[-1][0:-1]) for x in d]
+        d = string.split("?")
+        d = [[x[0]] * int(x.split("(")[-1][0:-1]) for x in d]
         flat_list = []
         for inner_list in d:
             flat_list.extend(inner_list)
         return flat_list
 
-    def add_data_slices(self,datalist):
+    def add_data_slices(self, datalist):
         """_summary_
 
         Args:
@@ -76,13 +87,13 @@ class VERIATIONS:
         Returns:
             _type_: _description_
         """
-        rows=[]
+        rows = []
         for x in range(len(datalist[0])):
-            data=[d[x] for d in datalist]
+            data = [d[x] for d in datalist]
             rows.append("".join(data))
         return rows
 
-    def get_column_row_pattern(self,formatpattern,patternseq):
+    def get_column_row_pattern(self, formatpattern, patternseq):
         """_summary_
 
         Args:
@@ -92,9 +103,9 @@ class VERIATIONS:
         Returns:
             _type_: _description_
         """
-        return "|".join([formatpattern,patternseq])[1:]
+        return "|".join([formatpattern, patternseq])[1:]
 
-    def replace_empty_vals(self,rows):
+    def replace_empty_vals(self, rows):
         """_summary_
 
         Args:
@@ -105,7 +116,7 @@ class VERIATIONS:
         """
         for x in rows:
             if "*" in x:
-                x=x.replace("*","")
+                x = x.replace("*", "")
             yield x
 
     def generate_row_patterns(self):
@@ -114,22 +125,22 @@ class VERIATIONS:
         Returns:
             _type_: _description_
         """
-        rowcolslist=[]
+        rowcolslist = []
         for x in self.RowTable.columns.to_list():
-            x=x.split("|")
-            x=[z.split("+") for z in x]
-            r=[]
+            x = x.split("|")
+            x = [z.split("+") for z in x]
+            r = []
             for s in x:
-                w=[]
+                w = []
                 for q in s:
-                    q=self.solve_iteration(q)
+                    q = self.solve_iteration(q)
                     w.append(q)
                 r.append(self.add_data_slices(w))
-            x=[list(self.replace_empty_vals(a)) for a in r]
+            x = [list(self.replace_empty_vals(a)) for a in r]
             rowcolslist.append(x)
         return rowcolslist
 
-    def merge(self,list1, list2):
+    def merge(self, list1, list2):
         """_summary_
 
         Args:
@@ -148,12 +159,12 @@ class VERIATIONS:
         Returns:
             _type_: _description_
         """
-        colrows=self.generate_row_patterns()
-        col=[]
+        colrows = self.generate_row_patterns()
+        col = []
         for x in colrows:
-            x=self.merge(x[0],x[1])
+            x = self.merge(x[0], x[1])
             col.append(x)
-        dataframeconst=dict(enumerate(col))
+        dataframeconst = dict(enumerate(col))
         return pd.DataFrame.from_dict(dataframeconst)
 
     def transform_sequences_to_keyboard_values(self):
@@ -162,23 +173,23 @@ class VERIATIONS:
         Yields:
             _type_: _description_
         """
-        for x,y in self.get_columnswise_rowpatterns().iterrows():
-            ye=[]
+        for x, y in self.get_columnswise_rowpatterns().iterrows():
+            ye = []
             for z in self.get_columnswise_rowpatterns().columns.to_list():
-                val=y[z]
-                val=val.split("|")
-                data=self.columnsTable.iloc[0,int(val[0])]
+                val = y[z]
+                val = val.split("|")
+                data = self.columnsTable.iloc[0, int(val[0])]
                 try:
-                    data=ast.literal_eval(data)
+                    data = ast.literal_eval(data)
                 except ValueError:
                     pass
-                if isinstance(data,list):
-                    data=data[int(val[1])]
-                data2=[]
+                if isinstance(data, list):
+                    data = data[int(val[1])]
+                data2 = []
                 for p in data.split("+"):
-                    p=self.solve_iteration(p)
+                    p = self.solve_iteration(p)
                     data2.append(p)
-                data2=self.add_data_slices(data2)
+                data2 = self.add_data_slices(data2)
                 ye.append(data2)
             yield ye
 
@@ -188,20 +199,20 @@ class VERIATIONS:
         Returns:
             _type_: _description_.
         """
-        rows=[]
+        rows = []
         for x in list(self.transform_sequences_to_keyboard_values()):
-            wq=[]
+            wq = []
             for z in x:
-                pds=[]
+                pds = []
                 for p in z:
                     if "*" in p:
-                        p=p.replace("*","")
+                        p = p.replace("*", "")
                         pds.append(p)
                     else:
                         pds.append(p)
                 wq.append(pds)
             rows.append(wq)
-        return pd.DataFrame(rows,columns=list(range(len(rows[0]))))
+        return pd.DataFrame(rows, columns=list(range(len(rows[0]))))
 
     def transform_keybord_seq_to_data(self):
         """_summary_
@@ -209,20 +220,106 @@ class VERIATIONS:
         Returns:
             _type_: _description_
         """
-        df=self.format_keyboard_values()
-        result=[]
-        for k,_v in df.iterrows():
-            data     = _v.values.tolist()
-            datas=[]
+        df = self.format_keyboard_values()
+        result = []
+        for k, _v in df.iterrows():
+            data = _v.values.tolist()
+            datas = []
             if data != [] and self.keyboard is not None:
                 for _g in data:
                     try:
-                        _d=ast.literal_eval(_g)
+                        _d = ast.literal_eval(_g)
                     except ValueError:
-                        _d=_g
-                    da="".join([self.keyboard[int(e)] for e in _d])
+                        _d = _g
+                    da = "".join([self.keyboard[int(e)] for e in _d])
                     datas.append(da)
             result.append(datas)
-        return pd.DataFrame(result,columns=list(range(len(result[0]))))
+        return pd.DataFrame(result, columns=list(range(len(result[0]))))
 
+    def clssifiy_column_mitterdata(self):
+        """_summary_"""
+        mitter = self.Mitter.formatwise_mitter()
+        formatteddata = []
+        for x in mitter.iloc[0].values.tolist():
+            if isinstance(ast.literal_eval(x), list):
+                x = [
+                    (
+                        ast.literal_eval(a[0])
+                        if isinstance(ast.literal_eval(a[0]), list)
+                        else a[0]
+                    )
+                    for a in ast.literal_eval(x)
+                ]
+            else:
+                try:
+                    x = ast.literal_eval(ast.literal_eval(x)[0])
+                except SyntaxError as E:
+                    print(E)
+            formatteddata.append(x)
+        mumerixconf = []
+        for z in formatteddata:
+            datadict = {}
+            if isinstance(z[0], list):
+                z = list(itertools.chain(*z))
+                datadict["datalength"] = len(z[0])
+                iterlen = FormatCalculator.find_max_length(z)
+                splitdata = []
+                for f in range(iterlen):
+                    sw = []
+                    for p in z:
+                        d = None
+                        try:
+                            d = p[f]
+                        except IndexError as E:
+                            d = "*"
+                        if d is not None:
+                            sw.append(d)
+                    splitdata.append(sw)
+                addslices = []
+                for q in splitdata:
+                    hashc = ""
+                    groups = (
+                        (key, sum(1 for _ in values))
+                        for (key, values) in itertools.groupby(q)
+                    )
+                    for color, count in groups:
+                        hashc += "?"
+                        hashc += color
+                        hashc += "({})".format(count)
+                    addslices.append(hashc[1:])
+                datadict["format"] = "+".join(addslices)
+            else:
+                datadict["datalength"] = 1
+                iterlen = FormatCalculator.find_max_length(z)
+                splitdata = []
+                for f in range(iterlen):
+                    sw = []
+                    for p in z:
+                        d = None
+                        try:
+                            d = p[f]
+                        except IndexError as E:
+                            d = "*"
+                        if d is not None:
+                            sw.append(d)
+                    splitdata.append(sw)
+                addslices = []
+                for q in splitdata:
+                    hashc = ""
+                    groups = (
+                        (key, sum(1 for _ in values))
+                        for (key, values) in itertools.groupby(q)
+                    )
+                    for color, count in groups:
+                        hashc += "?"
+                        hashc += color
+                        hashc += "({})".format(count)
+                    addslices.append(hashc[1:])
+                datadict["format"] = "+".join(addslices)
+            mumerixconf.append(datadict)
+        return pd.DataFrame([mumerixconf], columns=mitter.columns.to_list())
 
+    def regenerate_data_from_optimised_mitter(self):
+        data=self.get_columnswise_rowpatterns()
+        classifieddata=self.clssifiy_column_mitterdata()
+        pass

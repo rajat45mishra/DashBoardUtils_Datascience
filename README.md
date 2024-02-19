@@ -188,6 +188,23 @@ veri.transform_keybord_seq_to_data()
 
 ```
 
+### optimising mitter columns
+
+```Python
+from package.keyborddata import alphabets, alphabets_upper, numbers, simbols
+ 
+mitter=FormatCalculator.generate_datamiter(df)
+mitter2        = mitter.formatwise_mitter()
+formateld      = Mitter.hash_str_patterns(mitter2)
+keyboards        = (
+            alphabets + alphabets_upper + simbols + [str(x) for x in numbers] + [" "]
+        )
+veri=VERIATIONS(formateld,pd.DataFrame(columns=mitter.get_row_ordring_seq_from_dataset(df,iterlen=3)),keyboard=keyboards,Mitter=mitter)
+veri.clssifiy_column_mitterdata()
+```
+
+
+
 ###### [Documentation LINK](https://dashboardutils-datascience.readthedocs.io/en/latest/index.html)
 
 ### Sponcers Guidelines
