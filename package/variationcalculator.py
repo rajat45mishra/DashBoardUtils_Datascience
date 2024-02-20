@@ -157,7 +157,7 @@ class VERIATIONS:
         """_summary_
 
         Returns:
-            _type_: _description_
+            _type_: _description_.
         """
         colrows = self.generate_row_patterns()
         col = []
@@ -260,8 +260,8 @@ class VERIATIONS:
         for z in formatteddata:
             datadict = {}
             if isinstance(z[0], list):
-                z = list(itertools.chain(*z))
                 datadict["datalength"] = len(z[0])
+                z = list(itertools.chain(*z))
                 iterlen = FormatCalculator.find_max_length(z)
                 splitdata = []
                 for f in range(iterlen):
@@ -319,7 +319,53 @@ class VERIATIONS:
             mumerixconf.append(datadict)
         return pd.DataFrame([mumerixconf], columns=mitter.columns.to_list())
 
+    def divide_chunks(self, l, n):
+        """_summary_
+
+        Args:
+            l (_type_): _description_
+            n (_type_): _description_
+
+        Yields:
+            _type_: _description_
+        """
+        for i in range(0, len(l), n):
+            yield l[i : i + n]
+
     def regenerate_data_from_optimised_mitter(self):
-        data=self.get_columnswise_rowpatterns()
-        classifieddata=self.clssifiy_column_mitterdata()
-        pass
+        """_summary_
+
+        Returns:
+            _type_: _description_
+        """
+        data = self.get_columnswise_rowpatterns()
+        classifieddata = self.clssifiy_column_mitterdata()
+        datalist = []
+        for x, y in data.iterrows():
+            for s in data.columns.to_list():
+                val = y[s]
+                val = val.split("|")
+                format = classifieddata.columns.to_list()[int(val[0])]
+                pattern = classifieddata.iloc[0, int(val[0])]
+                wq=None
+                if pattern["datalength"] > 1:
+                    dataslices = []
+                    for q in pattern["format"].split("+"):
+                        dataslices.append(self.solve_iteration(q))
+                    daa = self.add_data_slices(dataslices)
+                    daa = [w.replace("*", "") if "*" in w else w for w in daa]
+                    chunckslist = list(self.divide_chunks(daa,pattern['datalength']))
+                    wq = chunckslist[int(val[1])]
+
+                else:
+                    dataslices = []
+                    for q in pattern["format"].split("+"):
+                        dataslices.append(self.solve_iteration(q))
+                    daa = self.add_data_slices(dataslices)
+                    wq = [w.replace("*", "") if "*" in w else w for w in daa][int(val[1])]
+                if isinstance(wq,str):
+                    y[s]=self.keyboard[int(wq)]
+                else:
+                    y[s]="".join([self.keyboard[int(o)] for o in wq])
+            datalist.append(y.to_dict())
+        return pd.DataFrame.from_records(datalist)

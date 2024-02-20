@@ -438,6 +438,8 @@ class Mitter:
 
         return Ordring(sliceseq, [ordd, seqord])
 
+
+
     def regenerate_seq_normalized(self, normlist):
         """regenerate all data from ordring and seq
 
