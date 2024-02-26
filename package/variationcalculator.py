@@ -28,6 +28,11 @@ class VERIATIONS:
         self.Mitter = Mitter
 
     def formats_and_no_of_patterns(self):
+        """_summary_
+
+        Returns:
+            _type_: _description_
+        """
         col = {}
         for i, v in self.columnsTable.iterrows():
             cd = self.columnsTable.columns.to_list()
@@ -236,6 +241,68 @@ class VERIATIONS:
             result.append(datas)
         return pd.DataFrame(result, columns=list(range(len(result[0]))))
 
+    def get_destructured_slices(self,z):
+        """_summary_
+
+        Args:
+            z (_type_): _description_
+
+        Returns:
+            _type_: _description_
+        """
+        iterlen = FormatCalculator.find_max_length(z)
+        splitdata = []
+        for f in range(iterlen):
+            sw = []
+            for p in z:
+                d = None
+                try:
+                    d = p[f]
+                except IndexError as E:
+                    d = "*"
+                if d is not None:
+                    sw.append(d)
+            splitdata.append(sw)
+        return splitdata
+
+    def add_destructured_slices(self,splitdata):
+        """_summary_
+
+        Args:
+            splitdata (_type_): _description_
+
+        Returns:
+            _type_: _description_
+        """
+        addslices = []
+        for q in splitdata:
+            hashc = ""
+            groups = (
+                        (key, sum(1 for _ in values))
+                        for (key, values) in itertools.groupby(q)
+                    )
+            for color, count in groups:
+                hashc += "?"
+                hashc += color
+                hashc += "({})".format(count)
+            addslices.append(hashc[1:])
+        return addslices
+
+    def get_format_hash_str(self,z,datadict):
+        """_summary_
+
+        Args:
+            z (_type_): _description_
+            datadict (_type_): _description_
+
+        Returns:
+            _type_: _description_
+        """
+        splitdata = self.get_destructured_slices(z)
+        addslices = self.add_destructured_slices(splitdata)
+        datadict["format"] = "+".join(addslices)
+        return datadict
+
     def clssifiy_column_mitterdata(self):
         """_summary_"""
         mitter = self.Mitter.formatwise_mitter()
@@ -262,60 +329,10 @@ class VERIATIONS:
             if isinstance(z[0], list):
                 datadict["datalength"] = len(z[0])
                 z = list(itertools.chain(*z))
-                iterlen = FormatCalculator.find_max_length(z)
-                splitdata = []
-                for f in range(iterlen):
-                    sw = []
-                    for p in z:
-                        d = None
-                        try:
-                            d = p[f]
-                        except IndexError as E:
-                            d = "*"
-                        if d is not None:
-                            sw.append(d)
-                    splitdata.append(sw)
-                addslices = []
-                for q in splitdata:
-                    hashc = ""
-                    groups = (
-                        (key, sum(1 for _ in values))
-                        for (key, values) in itertools.groupby(q)
-                    )
-                    for color, count in groups:
-                        hashc += "?"
-                        hashc += color
-                        hashc += "({})".format(count)
-                    addslices.append(hashc[1:])
-                datadict["format"] = "+".join(addslices)
+                datadict=self.get_format_hash_str(z,datadict)
             else:
                 datadict["datalength"] = 1
-                iterlen = FormatCalculator.find_max_length(z)
-                splitdata = []
-                for f in range(iterlen):
-                    sw = []
-                    for p in z:
-                        d = None
-                        try:
-                            d = p[f]
-                        except IndexError as E:
-                            d = "*"
-                        if d is not None:
-                            sw.append(d)
-                    splitdata.append(sw)
-                addslices = []
-                for q in splitdata:
-                    hashc = ""
-                    groups = (
-                        (key, sum(1 for _ in values))
-                        for (key, values) in itertools.groupby(q)
-                    )
-                    for color, count in groups:
-                        hashc += "?"
-                        hashc += color
-                        hashc += "({})".format(count)
-                    addslices.append(hashc[1:])
-                datadict["format"] = "+".join(addslices)
+                datadict=self.get_format_hash_str(z,datadict)
             mumerixconf.append(datadict)
         return pd.DataFrame([mumerixconf], columns=mitter.columns.to_list())
 
@@ -345,7 +362,6 @@ class VERIATIONS:
             for s in data.columns.to_list():
                 val = y[s]
                 val = val.split("|")
-                format = classifieddata.columns.to_list()[int(val[0])]
                 pattern = classifieddata.iloc[0, int(val[0])]
                 wq=None
                 if pattern["datalength"] > 1:
