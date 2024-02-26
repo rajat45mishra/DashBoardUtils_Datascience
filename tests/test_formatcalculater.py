@@ -247,3 +247,24 @@ def test_veriations_functions():
     assert isinstance(cols,dict)
     assert isinstance(sw,list)
 
+
+def test_data_regenerations():
+    from package.keyborddata import alphabets, alphabets_upper, numbers, simbols
+    df             = pd.DataFrame(
+        {
+            "var1": ["a c", "b w c", "c x"],
+            "other_var": [4, 7, 3],
+            "yet_another": [8, 0, 2],
+        }
+    )
+    from package.formatcalculator import FormatCalculator
+    mitter=FormatCalculator.generate_datamiter(df)
+    mitter2        = mitter.formatwise_mitter()
+    formateld      = Mitter.hash_str_patterns(mitter2)
+    keyboards        = (
+            alphabets + alphabets_upper + simbols + [str(x) for x in numbers] + [" "]
+        )
+    veri=VERIATIONS(formateld,pd.DataFrame(columns=mitter.get_row_ordring_seq_from_dataset(df,iterlen=3)),keyboard=keyboards,Mitter=mitter)
+    assert isinstance(veri.clssifiy_column_mitterdata(),pd.DataFrame)
+    assert isinstance(veri.regenerate_data_from_optimised_mitter(),pd.DataFrame)
+
