@@ -350,10 +350,10 @@ class VERIATIONS:
             yield l[i : i + n]
 
     def regenerate_data_from_optimised_mitter(self):
-        """_summary_
+        """regenerates data from optimised mitter
 
         Returns:
-            _type_: _description_
+            dataframe: Pd.DataFrame
         """
         data = self.get_columnswise_rowpatterns()
         classifieddata = self.clssifiy_column_mitterdata()
@@ -385,3 +385,14 @@ class VERIATIONS:
                     y[s]="".join([self.keyboard[int(o)] for o in wq])
             datalist.append(y.to_dict())
         return pd.DataFrame.from_records(datalist)
+    
+    def format_regenerated_data(self,columns:List[str]):
+        """formats our data
+
+        Args:
+            columns (List[str]): columns seqs need to be same as when we loaded data
+
+        """
+        df=self.regenerate_data_from_optimised_mitter()
+        df.columns=columns
+        return df
