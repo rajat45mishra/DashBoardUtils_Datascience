@@ -1,5 +1,5 @@
-package package
-===============
+package
+========
 
 Submodules
 ----------
@@ -40,6 +40,14 @@ package.keyborddata module
 --------------------------
 
 .. automodule:: package.keyborddata
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+package.formatcalculator module
+-------------------------------
+
+.. automodule:: package.variationcalculator
    :members:
    :undoc-members:
    :show-inheritance:
