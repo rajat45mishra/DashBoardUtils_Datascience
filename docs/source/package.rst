@@ -44,7 +44,7 @@ package.keyborddata module
    :undoc-members:
    :show-inheritance:
 
-package.formatcalculator module
+package.variationcalculator module
 -------------------------------
 
 .. automodule:: package.variationcalculator
