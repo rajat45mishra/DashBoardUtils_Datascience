@@ -1,11 +1,7 @@
-
-USE CASES DOCS
-==============
-
 dashboard builder util generate all posibble stats from Dataframe for DataScience and visualisation purposes
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-.. code-block:: python
+.. code:: python
 
    from package.dashboardutil import DashboardElementsBuilder
    from package.dataclassifier import DataClassifier
@@ -20,9 +16,9 @@ dashboard builder util generate all posibble stats from Dataframe for DataScienc
            ploat_data+=list(z)
 
 above data canbe visualised like below
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-.. code-block:: python
+.. code:: python
 
    data={'slow': {'lables': [66.2, 66.4, 66.3, 71.4, 67.9], 'counts': [1, 1, 1, 3, 1]}}
    from bokeh.plotting import figure, show
@@ -41,9 +37,9 @@ above data canbe visualised like below
    show(p)
 
 export bulk graphs for all possible conditions
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-.. code-block:: python
+.. code:: python
 
    from package.DashBoardsTemplates import export_graphs_hist
    from bokeh.plotting import show 
@@ -53,9 +49,9 @@ export bulk graphs for all possible conditions
    show(visual[0])
 
 calucate data formets for visualisation data for formets visulisation purposes
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-.. code-block:: python
+.. code:: python
 
    from package.keyborddata import *
    from package.formatcalculator import FormatCalculator 
@@ -67,9 +63,9 @@ calucate data formets for visualisation data for formets visulisation purposes
        unique_+=x
 
 calucate data formets for dataframe data for formets data optimisation and validation purposes
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-.. code-block:: python
+.. code:: python
 
    from package.keyborddata import *
    import pandas as pd
@@ -82,9 +78,9 @@ calucate data formets for dataframe data for formets data optimisation and valid
    unique_formatas=FormatCalculator.get_unique_hashes_from_df_columnwise(formets)
 
 optimising_regex string
-^^^^^^^^^^^^^^^^^^^^^^^
+~~~~~~~~~~~~~~~~~~~~~~~
 
-.. code-block:: python
+.. code:: python
 
    from package.keyborddata import *
    import pandas as pd
@@ -104,32 +100,159 @@ optimising_regex string
    # get vocabdf formets column wise 
    unique_formatas=FormatCalculator.get_unique_hashes_from_df_columnwise(formets)
 
+generate data mitter
+~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+
+   from package.formatcalculator import FormatCalculator
+   import pandas as pd
+   import itertools
+
+   # reads df from csv
+   df = pd.read_csv("testdata.csv")
+   mitter=FormatCalculator.generate_datamiter(df)
+   mitter._df.to_excel("test.xlsx")
+   # datamiters optimises data acording to keyboard letters
+
+optimising and manageing large datasets with mitter and row patterns with constructive maths
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+   from package.formatcalculator import FormatCalculator
+   import pandas as pd
+   import itertools
+   import ast
+
+   # reads df from csv
+   df             = pd.read_csv("tw.csv")
+
+   mitter         = FormatCalculator.generate_datamiter(df)
+   a              = mitter.formatwise_mitter()
+   # get optimised row pattern for data ordring management
+   a             =  mitter.get_row_ordring_seq_from_dataset(df.head(10),3)
+
+optimizing str patterns
+~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+   from package.formatcalculator import FormatCalculator,Mitter
+   import pandas as pd
+   import ast
+   # reads df from csv
+   df             = pd.read_csv("testfile.csv")
+   mitter         = FormatCalculator.generate_datamiter(df)
+   mitter         = mitter.formatwise_mitter()
+   formateld      = Mitter.hash_str_patterns(mitter)
+                   
+
+calculate \_ veriations on row and cols
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+   from package.formatcalculator import FormatCalculator,Mitter
+   import pandas as pd
+   from package.variationcalculator import VERIATIONS
+
+   # reads df from csv
+   df             = pd.read_csv("testfile.csv")
+
+   mitter         = FormatCalculator.generate_datamiter(df)
+   mitter2        = mitter.formatwise_mitter()
+   formateld      = Mitter.hash_str_patterns(mitter2)
+
+   veri           = VERIATIONS(formateld,pd.DataFrame(columns=mitter.get_row_ordring_seq_from_dataset(df,iterlen=3)))
+
+   cols           = veri.formats_and_no_of_patterns()
+   sw             = veri.row_sequance_veriations()
+
+regenerate using Veriations in seq
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+   from package.formatcalculator import FormatCalculator,Mitter
+   import pandas as pd
+   from package.variationcalculator import VERIATIONS
+   from package.keyborddata import *
+   # reads df from csv
+   df             = pd.read_csv("testfile.csv")
+
+   mitter         = FormatCalculator.generate_datamiter(df)
+   mitter2        = mitter.formatwise_mitter()
+   formateld      = Mitter.hash_str_patterns(mitter2)
+   keyboards = (
+               alphabets + alphabets_upper + simbols + [str(x) for x in numbers] + [" "]
+           )
+   veri=VERIATIONS(formateld,pd.DataFrame(columns=mitter.get_row_ordring_seq_from_dataset(df,iterlen=3)),keyboard=keyboards)
+   veri.transform_keybord_seq_to_data()       
+
+optimising mitter columns
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+   from package.keyborddata import alphabets, alphabets_upper, numbers, simbols
+    
+   mitter=FormatCalculator.generate_datamiter(df)
+   mitter2        = mitter.formatwise_mitter()
+   formateld      = Mitter.hash_str_patterns(mitter2)
+   keyboards        = (
+               alphabets + alphabets_upper + simbols + [str(x) for x in numbers] + [" "]
+           )
+   veri=VERIATIONS(formateld,pd.DataFrame(columns=mitter.get_row_ordring_seq_from_dataset(df,iterlen=3)),keyboard=keyboards,Mitter=mitter)
+   veri.clssifiy_column_mitterdata()
+
+regenerate from optimised data
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+   from package.keyborddata import alphabets, alphabets_upper, numbers, simbols
+   from package.formatcalculator import FormatCalculator
+   mitter=FormatCalculator.generate_datamiter(df)
+   mitter2        = mitter.formatwise_mitter()
+   formateld      = Mitter.hash_str_patterns(mitter2)
+   keyboards        = (
+               alphabets + alphabets_upper + simbols + [str(x) for x in numbers] + [" "]
+           )
+   veri=VERIATIONS(formateld,pd.DataFrame(columns=mitter.get_row_ordring_seq_from_dataset(df,iterlen=3)),keyboard=keyboards,Mitter=mitter)
+   veri.clssifiy_column_mitterdata()
+   veri.regenerate_data_from_optimised_mitter()
+
+`Documentation LINK <https://dashboardutils-datascience.readthedocs.io/en/latest/index.html>`__
+                                                                                               
+
 Sponcers Guidelines
-^^^^^^^^^^^^^^^^^^^
+~~~~~~~~~~~~~~~~~~~
 
 please send us email to get sponcers docs for this project rajatsmishra@aol.com
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 
 Project Contribution GuideLines
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 git page link https://github.com/rajat45mishra/DashBoardUtils_Datascience
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 
 send us update suggestions on rajatsmishra@aol.com
-""""""""""""""""""""""""""""""""""""""""""""""""""
+''''''''''''''''''''''''''''''''''''''''''''''''''
 
 todo tasks
-~~~~~~~~~~
+^^^^^^^^^^
 
 - add more algorithum in data classifier
-########################################
+                                        
 
 - add more graph templates in DashBoaredtemplates class
-#######################################################
+                                                       
 
 - use cases docs and api docs for users
-#######################################
+                                       
 
 - totorials for extracting and scripting formats to solve realword software application optimisation purposes
-#############################################################################################################
+                                                                                                             
